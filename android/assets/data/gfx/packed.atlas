@@ -1,0 +1,104 @@
+
+packed.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+blocksSheetSmall
+  rotate: false
+  xy: 2, 4
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+box
+  rotate: false
+  xy: 349, 170
+  size: 32, 32
+  split: 11, 12, 11, 11
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+down
+  rotate: false
+  xy: 132, 68
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+dropDown
+  rotate: false
+  xy: 264, 54
+  size: 48, 48
+  orig: 48, 48
+  offset: 0, 0
+  index: -1
+gameOverLarge
+  rotate: false
+  xy: 2, 186
+  size: 215, 50
+  orig: 215, 50
+  offset: 0, 0
+  index: -1
+left
+  rotate: false
+  xy: 132, 2
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+mainMenu
+  rotate: false
+  xy: 219, 204
+  size: 128, 32
+  orig: 128, 32
+  offset: 0, 0
+  index: -1
+newGame
+  rotate: false
+  xy: 349, 204
+  size: 119, 32
+  orig: 119, 32
+  offset: 0, 0
+  index: -1
+newRecordLarge
+  rotate: false
+  xy: 2, 134
+  size: 215, 50
+  orig: 215, 50
+  offset: 0, 0
+  index: -1
+pauseButton
+  rotate: false
+  xy: 314, 56
+  size: 46, 46
+  orig: 46, 46
+  offset: 0, 0
+  index: -1
+pausedNotice
+  rotate: false
+  xy: 219, 170
+  size: 128, 32
+  orig: 128, 32
+  offset: 0, 0
+  index: -1
+right
+  rotate: false
+  xy: 219, 104
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+rotateLeft
+  rotate: false
+  xy: 285, 104
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+rotateRight
+  rotate: false
+  xy: 198, 38
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
