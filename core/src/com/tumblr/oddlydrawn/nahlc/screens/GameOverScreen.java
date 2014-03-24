@@ -238,7 +238,6 @@ public class GameOverScreen implements Screen {
 		Group group = new Group();
 		group.addActor(previousScoreButton);
 		group.addActor(previousLevelButton);
-		group.setOrigin(110, 6);
 
 // previousLevelButton.setPosition(20, 30);
 // // previousLevelButton.setOrigin(55, 30);
@@ -264,6 +263,15 @@ public class GameOverScreen implements Screen {
 
 // allTheScores[1][0].addAction(Actions.sequence(Actions.delay(0.5f), Actions.delay(0.5f),
 // Actions.moveBy(0, -26, 2, Interpolation.bounceOut)));
+
+// group.setOrigin(110, 6);
+		if (savedStuff.isPreviousScoreInTopScore()) {
+			group.setOrigin(group.getX() + group.getWidth() + 30, 6);
+			group.addAction(Actions.sequence(Actions.delay(2f), Actions.delay(0.5f),
+				Actions.moveBy(0, -26, 2, Interpolation.bounceOut), Actions.delay(2f),
+				Actions.rotateBy(90f, 2f, Interpolation.bounceOut), Actions.delay(0.1f),
+				Actions.moveBy(0, -120, 2, Interpolation.bounceOut)));
+		}
 
 		int optimum = 7;
 		int missing;
@@ -291,7 +299,7 @@ public class GameOverScreen implements Screen {
 	}
 
 	private float subPosFromLength (int length) {
-		return 12 * (length - 1);
+		return 11 * (length - 1);
 	}
 
 	public String fillStringWithSpaces (String s) {
