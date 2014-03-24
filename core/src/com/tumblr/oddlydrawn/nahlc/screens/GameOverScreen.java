@@ -231,6 +231,7 @@ public class GameOverScreen implements Screen {
 		TextButton previousLevelButton = new TextButton(String.valueOf(level), skin);
 		TextButton previousScoreButton = new TextButton(String.valueOf(score), skin);
 
+		previousLevelButton.setText(fillStringWithSpaces(String.valueOf(previousLevelButton.getText())));
 		stage.addActor(previousLevelButton);
 		stage.addActor(previousScoreButton);
 
@@ -241,7 +242,7 @@ public class GameOverScreen implements Screen {
 
 // previousLevelButton.setPosition(20, 30);
 // // previousLevelButton.setOrigin(55, 30);
-		previousScoreButton.setPosition(100, 00);
+		previousScoreButton.setPosition(139 - subPosFromLength(previousScoreButton.getText().length()), 00);
 		previousScoreButton.align(Align.left);
 // previousScoreButton.setOrigin(55, 30);
 
@@ -251,7 +252,10 @@ public class GameOverScreen implements Screen {
 		previousScoreButton.setTransform(true);
 
 		stage.addActor(group);
-		group.setPosition(130, 97);
+		group.setPosition(110, 97);
+
+		allTheScores[1][9].setVisible(false);
+		allTheScores[2][9].setVisible(false);
 
 		group.setTransform(true);
 // group.addAction(Actions.sequence(Actions.delay(5f), Actions.rotateBy(90, 3f, Interpolation.bounceOut)));
@@ -260,6 +264,13 @@ public class GameOverScreen implements Screen {
 
 // allTheScores[1][0].addAction(Actions.sequence(Actions.delay(0.5f), Actions.delay(0.5f),
 // Actions.moveBy(0, -26, 2, Interpolation.bounceOut)));
+
+		int optimum = 7;
+		int missing;
+
+// allTheScores[2][0].setText("  " + allTheScores[2][0].getText());
+		allTheScores[2][0].setText(fillCSWithSpaces(allTheScores[2][0].getText()));
+		log("Perfect score string length: " + allTheScores[2][0].getText().length());
 		mainMenuButton.addListener(new ChangeListener() {
 			public void changed (ChangeEvent event, Actor actor) {
 				log("mainMenu changed");
@@ -277,6 +288,32 @@ public class GameOverScreen implements Screen {
 			}
 		});
 
+	}
+
+	private float subPosFromLength (int length) {
+		return 12 * (length - 1);
+	}
+
+	public String fillStringWithSpaces (String s) {
+		int optimum = 7;
+		int missing = optimum - s.length();
+		log("missing = " + missing);
+		for (int i = 0; i < missing; i++) {
+			s = " " + s;
+		}
+		log("s.length = " + s.length());
+		return s;
+	}
+
+	public CharSequence fillCSWithSpaces (CharSequence charSequence) {
+		int optimum = 7;
+		int missing = optimum - charSequence.length();
+		log("missing = " + missing);
+		for (int i = 0; i < missing; i++) {
+			charSequence = " " + charSequence;
+		}
+		log("charSequence.length = " + charSequence.length());
+		return charSequence;
 	}
 
 	@Override
