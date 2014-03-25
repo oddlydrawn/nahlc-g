@@ -63,7 +63,9 @@ public class Renderer {
 	private Coords posThree;
 	private Coords posFour;
 	private String tmpString;
+	private String highScoreString;
 	private SavedStuff savedStuff;
+	private int highScore;
 	private int color;
 	private int x;
 	private int y;
@@ -83,6 +85,9 @@ public class Renderer {
 		posThree = new Coords();
 		posFour = new Coords();
 		savedStuff = new SavedStuff();
+
+		highScoreString = savedStuff.getHighScore();
+		highScore = Integer.parseInt(savedStuff.getHighScore());
 	}
 
 	/** render() renders stuff, clears the screen. */
@@ -115,24 +120,21 @@ public class Renderer {
 		font.draw(batch, LEVEL, 235, 120);
 		// Level number
 		tmpString = Integer.toString(board.getCurrentLevel());
-		font.draw(batch, tmpString, rightJustify(), 142);
+		font.draw(batch, tmpString, rightJustify(tmpString), 142);
 
 		// "Score:"
 		font.draw(batch, SCORE, 235, 174);
 		// Score number from board
 		tmpString = Integer.toString(board.getCurrentScore());
-		font.draw(batch, tmpString, rightJustify(), 196);
+		font.draw(batch, tmpString, rightJustify(tmpString), 196);
 
 		// "HiScore:"
 		font.draw(batch, HI_SCORE, 235, 228);
-		if (board.getCurrentScore() < Integer.parseInt(savedStuff.getHighScore())) {
-
-			// TODO make a high score, why not top ten this time?
-			tmpString = savedStuff.getHighScore();
-			font.draw(batch, tmpString, rightJustify(), 250);
+		if (board.getCurrentScore() < highScore) {
+			font.draw(batch, highScoreString, rightJustify(highScoreString), 250);
 		} else {
 			tmpString = Integer.toString(board.getCurrentScore());
-			font.draw(batch, tmpString, rightJustify(), 250);
+			font.draw(batch, tmpString, rightJustify(tmpString), 250);
 		}
 
 		if (floater.getPaused() == true) {
@@ -269,8 +271,8 @@ public class Renderer {
 
 	/** Numbers should be right justified, I think. This does that.
 	 * @return The X position needed to correctly right justify text. */
-	private float rightJustify () {
-		x = tmpString.length() - 1;
+	private float rightJustify (String s) {
+		x = s.length() - 1;
 		x *= GLYPH_WIDTH;
 		return RIGHT_ORIGIN - x;
 	}
