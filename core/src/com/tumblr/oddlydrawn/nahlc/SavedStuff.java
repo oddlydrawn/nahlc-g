@@ -50,6 +50,10 @@ public class SavedStuff {
 		}
 	}
 
+	public String getHighScore () {
+		return allTheScoresStrings[0][SCORE];
+	}
+
 	public void setLevel (int level) {
 		previousLevel = level;
 	}

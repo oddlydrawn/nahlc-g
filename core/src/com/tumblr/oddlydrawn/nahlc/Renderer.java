@@ -63,6 +63,7 @@ public class Renderer {
 	private Coords posThree;
 	private Coords posFour;
 	private String tmpString;
+	private SavedStuff savedStuff;
 	private int color;
 	private int x;
 	private int y;
@@ -81,6 +82,7 @@ public class Renderer {
 		posTwo = new Coords();
 		posThree = new Coords();
 		posFour = new Coords();
+		savedStuff = new SavedStuff();
 	}
 
 	/** render() renders stuff, clears the screen. */
@@ -123,9 +125,15 @@ public class Renderer {
 
 		// "HiScore:"
 		font.draw(batch, HI_SCORE, 235, 228);
-		// TODO make a high score, why not top ten this time?
-		tmpString = Integer.toString(10000);
-		font.draw(batch, tmpString, rightJustify(), 250);
+		if (board.getCurrentScore() < Integer.parseInt(savedStuff.getHighScore())) {
+
+			// TODO make a high score, why not top ten this time?
+			tmpString = savedStuff.getHighScore();
+			font.draw(batch, tmpString, rightJustify(), 250);
+		} else {
+			tmpString = Integer.toString(board.getCurrentScore());
+			font.draw(batch, tmpString, rightJustify(), 250);
+		}
 
 		if (floater.getPaused() == true) {
 			assets.getBoxPatch().draw(batch, Assets.BLOCK_WIDTH * PAD_TWO, Assets.BLOCK_HEIGHT * PAD_TWO,
