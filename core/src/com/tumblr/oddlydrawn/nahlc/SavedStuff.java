@@ -20,8 +20,8 @@ package com.tumblr.oddlydrawn.nahlc;
 public class SavedStuff {
 	private final int LEVEL = 0;
 	private final int SCORE = 1;
-	private String[][] allTheScoresStrings = { {"20", "10000"}, {"19", "9000"}, {"17", "8000"}, {"18", "7000"}, {"16", "6000"},
-		{"15", "5000"}, {"14", "4000"}, {"13", "3000"}, {"12", "20"}, {"11", "10"}};
+	private String[][] allTheScoresStrings = { {"20", "100"}, {"19", "90"}, {"17", "80"}, {"18", "70"}, {"16", "60"},
+		{"15", "50"}, {"14", "40"}, {"13", "30"}, {"15", "25"}, {"15", "20"}};
 	private int previousScore;
 	private int previousLevel;
 	private int scoreToReplace;

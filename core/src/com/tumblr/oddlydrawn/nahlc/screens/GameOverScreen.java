@@ -228,55 +228,66 @@ public class GameOverScreen implements Screen {
 		newGameButton.toBack();
 		mainMenuButton.toBack();
 
-		TextButton previousLevelButton = new TextButton(String.valueOf(level), skin);
-		TextButton previousScoreButton = new TextButton(String.valueOf(score), skin);
+		String levelButtonString;
+		int mew = Integer.valueOf(String.valueOf(allTheScores[1][9].getText()));
+		if (mew < 10) {
+			levelButtonString = String.valueOf(allTheScores[1][9].getText()) + " ";
+		} else {
+			levelButtonString = String.valueOf(allTheScores[1][9].getText());
+		}
+		String previousLevelButtonString;
+		if (level < 10) {
+			previousLevelButtonString = String.valueOf(level + " ");
+		} else {
+			previousLevelButtonString = String.valueOf(level);
+		}
+		String previousScoreString = String.valueOf(score);
 
-		previousLevelButton.setText(fillStringWithSpaces(String.valueOf(previousLevelButton.getText())));
-		stage.addActor(previousLevelButton);
-		stage.addActor(previousScoreButton);
+		TextButton previousLevelButton = new TextButton(previousLevelButtonString, skin);
+		TextButton previousScoreButton = new TextButton(previousScoreString, skin);
+
+		TextButton tenthLevelButton = new TextButton(levelButtonString, skin);
+		TextButton tenthScoreButton = new TextButton(String.valueOf(allTheScores[2][9].getText()), skin);
+
+		tenthLevelButton.setText(fillStringWithSpaces(String.valueOf(tenthLevelButton.getText())));
+		previousLevelButton.setText(fillStringWithSpaces(previousLevelButtonString));
+		stage.addActor(tenthLevelButton);
+		stage.addActor(tenthScoreButton);
 
 		Group group = new Group();
-		group.addActor(previousScoreButton);
-		group.addActor(previousLevelButton);
+		group.addActor(tenthScoreButton);
+		group.addActor(tenthLevelButton);
 
-// previousLevelButton.setPosition(20, 30);
-// // previousLevelButton.setOrigin(55, 30);
-		previousScoreButton.setPosition(139 - subPosFromLength(previousScoreButton.getText().length()), 00);
+		Group groupPrevious = new Group();
+		groupPrevious.addActor(previousLevelButton);
+		groupPrevious.addActor(previousScoreButton);
+
+		tenthScoreButton.setPosition(144 - subPosFromLength(tenthScoreButton.getText().length()), 00);
+		previousScoreButton.setPosition(144 - subPosFromLength(previousScoreString.length()), 00);
+		tenthScoreButton.align(Align.left);
 		previousScoreButton.align(Align.left);
-// previousScoreButton.setOrigin(55, 30);
 
-// previousLevelButton.addAction(Actions.rotateBy(90, 3f, Interpolation.bounceOut));
-// previousScoreButton.addAction(Actions.rotateBy(90, 3f, Interpolation.bounceOut));
-		previousLevelButton.setTransform(true);
-		previousScoreButton.setTransform(true);
+		tenthLevelButton.setTransform(true);
+		tenthScoreButton.setTransform(true);
 
 		stage.addActor(group);
-		group.setPosition(110, 97);
+		group.setPosition(105, 97);
 
 		allTheScores[1][9].setVisible(false);
 		allTheScores[2][9].setVisible(false);
 
 		group.setTransform(true);
-// group.addAction(Actions.sequence(Actions.delay(5f), Actions.rotateBy(90, 3f, Interpolation.bounceOut)));
 		log("testtingggsdf " + topScoreTable.getCell(allTheScores[1][0]).getWidgetX() + ", "
 			+ topScoreTable.getCell(allTheScores[2][0]).getPadLeft());
 
-// allTheScores[1][0].addAction(Actions.sequence(Actions.delay(0.5f), Actions.delay(0.5f),
-// Actions.moveBy(0, -26, 2, Interpolation.bounceOut)));
-
-// group.setOrigin(110, 6);
 		if (savedStuff.isPreviousScoreInTopScore()) {
-			group.setOrigin(group.getX() + group.getWidth() + 30, 6);
+			group.setOrigin(group.getX() + group.getWidth() + 50, 10);
 			group.addAction(Actions.sequence(Actions.delay(2f), Actions.delay(0.5f),
-				Actions.moveBy(0, -26, 2, Interpolation.bounceOut), Actions.delay(2f),
+				Actions.moveBy(0, -26, 2, Interpolation.bounceOut), Actions.delay(0.1f),
 				Actions.rotateBy(90f, 2f, Interpolation.bounceOut), Actions.delay(0.1f),
 				Actions.moveBy(0, -120, 2, Interpolation.bounceOut)));
 		}
 
-		int optimum = 7;
-		int missing;
-
-// allTheScores[2][0].setText("  " + allTheScores[2][0].getText());
 		allTheScores[2][0].setText(fillCSWithSpaces(allTheScores[2][0].getText()));
 		log("Perfect score string length: " + allTheScores[2][0].getText().length());
 		mainMenuButton.addListener(new ChangeListener() {
@@ -296,10 +307,25 @@ public class GameOverScreen implements Screen {
 			}
 		});
 
+		groupPrevious.setPosition(group.getX(), group.getY() + getVerticalPosSub(savedStuff.getScoreToReplace()));
+
+		groupPrevious.setTransform(true);
+		groupPrevious.addAction(Actions.fadeOut(0.1f));
+
+		if (savedStuff.isPreviousScoreInTopScore()) {
+			groupPrevious.addAction(Actions.sequence(Actions.delay(6f), Actions.fadeIn(1f)));
+		}
+		stage.addActor(groupPrevious);
 	}
 
 	private float subPosFromLength (int length) {
 		return 11 * (length - 1);
+	}
+
+	private float getVerticalPosSub (int level) {
+		int diff = 9 - level;
+		System.out.println("get vertical pos sub: " + diff * 15);
+		return diff * 26;
 	}
 
 	public String fillStringWithSpaces (String s) {
@@ -330,8 +356,8 @@ public class GameOverScreen implements Screen {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		stage.act(delta);
 		stage.draw();
-		rootTable.drawDebug(stage);
-		topScoreTable.drawDebug(stage);
+// rootTable.drawDebug(stage);
+// topScoreTable.drawDebug(stage);
 	}
 
 	@Override
