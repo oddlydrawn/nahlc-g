@@ -54,10 +54,7 @@ public class GameOverScreen implements Screen {
 	private Table topScoreTable;
 	private Skin skin;
 	private SavedStuff savedStuff;
-	private int tmpX;
-	private int tmpY;
-	Assets assets;
-	Group groupTen;
+	private Assets assets;
 
 	public GameOverScreen (Game g, int level, int score) {
 		game = g;
@@ -126,7 +123,6 @@ public class GameOverScreen implements Screen {
 		Image newRecordImage = new Image(assets.getNewRecordSprite());
 		Image gameOverImage = new Image(assets.getGameOverSprite());
 
-		log("height" + assets.getNewRecordSprite().getHeight());
 		Image titleImage;
 		if (savedStuff.isPreviousScoreInTopScore()) {
 			titleImage = newRecordImage;
@@ -148,17 +144,12 @@ public class GameOverScreen implements Screen {
 					topScoreTable.add(allTheScores[x][y]);
 					break;
 				case 1:
-					System.out.println("case 1: " + x + " and " + y);
 					allTheScores[x][y] = new Label(savedStuff.getLevel(y, x - 1), skin);
 					topScoreTable.add(allTheScores[x][y]);
 
 					if (savedStuff.isPreviousScoreInTopScore()) {
 						if (y >= savedStuff.getScoreToReplace()) {
 							if (y == 9) {
-// allTheScores[x][y].addAction(Actions.sequence(Actions.delay(2f), Actions.delay(0.5f),
-// Actions.moveBy(0, -26, 2, Interpolation.bounceOut), Actions.delay(2f),
-// Actions.rotateBy(90f, 2f, Interpolation.bounceOut), Actions.delay(0.5f),
-// Actions.moveBy(0, -500, 0.5f, Interpolation.bounceOut)));
 								allTheScores[x][y].addAction(Actions.sequence(Actions.delay(2f), Actions.delay(0.5f),
 									Actions.moveBy(0, -26, 2, Interpolation.bounceOut),
 									Actions.moveBy(0, -500, 2, Interpolation.bounceOut)));
@@ -172,17 +163,12 @@ public class GameOverScreen implements Screen {
 
 					break;
 				case 2:
-					System.out.println("case 2: " + x + " and " + y);
 					allTheScores[x][y] = new Label(savedStuff.getScore(y, x - 1), skin);
 					topScoreTable.add(allTheScores[x][y]).right();
 
 					if (savedStuff.isPreviousScoreInTopScore()) {
 						if (y >= savedStuff.getScoreToReplace()) {
 							if (y == 9) {
-// allTheScores[x][y].addAction(Actions.sequence(Actions.delay(2f), Actions.delay(0.5f),
-// Actions.moveBy(0, -26, 2, Interpolation.bounceOut), Actions.delay(2f),
-// Actions.rotateBy(90f, 2f, Interpolation.bounceOut), Actions.delay(0.5f),
-// Actions.moveBy(0, -500, 0.5f, Interpolation.bounceOut)));
 								allTheScores[x][y].addAction(Actions.sequence(Actions.delay(2f), Actions.delay(0.5f),
 									Actions.moveBy(0, -26, 2, Interpolation.bounceOut),
 									Actions.moveBy(0, -500, 2, Interpolation.bounceOut)));
@@ -194,7 +180,6 @@ public class GameOverScreen implements Screen {
 					}
 					break;
 				default:
-					System.out.println("He's dead, jim");
 					break;
 				}
 			}
@@ -277,8 +262,6 @@ public class GameOverScreen implements Screen {
 		allTheScores[2][9].setVisible(false);
 
 		group.setTransform(true);
-		log("testtingggsdf " + topScoreTable.getCell(allTheScores[1][0]).getWidgetX() + ", "
-			+ topScoreTable.getCell(allTheScores[2][0]).getPadLeft());
 
 		if (savedStuff.isPreviousScoreInTopScore()) {
 			group.setOrigin(group.getX() + group.getWidth() + 50, 10);
@@ -289,33 +272,32 @@ public class GameOverScreen implements Screen {
 		}
 
 		allTheScores[2][0].setText(fillCSWithSpaces(allTheScores[2][0].getText()));
-		log("Perfect score string length: " + allTheScores[2][0].getText().length());
 		mainMenuButton.addListener(new ChangeListener() {
 			public void changed (ChangeEvent event, Actor actor) {
-				log("mainMenu changed");
-
 // game.setScreen(new MainMenuScreen(game));
-
 			}
 		});
 
 		newGameButton.addListener(new ChangeListener() {
 			public void changed (ChangeEvent event, Actor actor) {
-				log("newgame changed");
 				dispose();
 				game.setScreen(new GameScreen(game));
 			}
 		});
 
 		groupPrevious.setPosition(group.getX(), group.getY() + getVerticalPosSub(savedStuff.getScoreToReplace()));
-
 		groupPrevious.setTransform(true);
 		groupPrevious.addAction(Actions.fadeOut(0.1f));
-
 		if (savedStuff.isPreviousScoreInTopScore()) {
-			groupPrevious.addAction(Actions.sequence(Actions.delay(6f), Actions.fadeIn(1f)));
+			groupPrevious.addAction(Actions.sequence(Actions.delay(7.5f), Actions.fadeIn(1f)));
 		}
 		stage.addActor(groupPrevious);
+
+		savedStuff.saveLevelAndScore(level, score);
+		try {
+			savedStuff.saveToFile();
+		} catch (Exception e) {
+		}
 	}
 
 	private float subPosFromLength (int length) {
@@ -324,29 +306,24 @@ public class GameOverScreen implements Screen {
 
 	private float getVerticalPosSub (int level) {
 		int diff = 9 - level;
-		System.out.println("get vertical pos sub: " + diff * 15);
 		return diff * 26;
 	}
 
 	public String fillStringWithSpaces (String s) {
 		int optimum = 7;
 		int missing = optimum - s.length();
-		log("missing = " + missing);
 		for (int i = 0; i < missing; i++) {
 			s = " " + s;
 		}
-		log("s.length = " + s.length());
 		return s;
 	}
 
 	public CharSequence fillCSWithSpaces (CharSequence charSequence) {
 		int optimum = 7;
 		int missing = optimum - charSequence.length();
-		log("missing = " + missing);
 		for (int i = 0; i < missing; i++) {
 			charSequence = " " + charSequence;
 		}
-		log("charSequence.length = " + charSequence.length());
 		return charSequence;
 	}
 
@@ -356,8 +333,6 @@ public class GameOverScreen implements Screen {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		stage.act(delta);
 		stage.draw();
-// rootTable.drawDebug(stage);
-// topScoreTable.drawDebug(stage);
 	}
 
 	@Override
@@ -376,7 +351,6 @@ public class GameOverScreen implements Screen {
 
 	@Override
 	public void pause () {
-		log("pause() called");
 	}
 
 	@Override
@@ -385,7 +359,6 @@ public class GameOverScreen implements Screen {
 
 	@Override
 	public void dispose () {
-		log("dispose() called");
 		stage.dispose();
 		skin.dispose();
 		assets.disposeGameOver();

@@ -16,6 +16,9 @@
 
 package com.tumblr.oddlydrawn.nahlc;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
+
 /** @author oddlydrawn */
 public class SavedStuff {
 	private final int LEVEL = 0;
@@ -28,12 +31,23 @@ public class SavedStuff {
 	private boolean newRecord;
 
 	public SavedStuff () {
-		System.out.println("allTheScoresString[2][SCORE]= " + allTheScoresStrings[2][SCORE]);
-		System.out.println("allTheScoresString[3][SCORE]= " + allTheScoresStrings[3][SCORE]);
-		System.out.println("allTheScoresString[4][SCORE]= " + allTheScoresStrings[4][SCORE]);
-		System.out.println("allTheScoresString[5][SCORE]= " + allTheScoresStrings[5][SCORE]);
-		System.out.println("scoreStringToInt(2) + " + scoreStringToInt(2));
-// saveLevelAndScore(19, 58000000);
+		try {
+			String scoresString;
+			FileHandle scoresHandle;
+			if (Gdx.files.local("scores.txt").exists()) {
+				scoresHandle = Gdx.files.local("scores.txt");
+				scoresString = scoresHandle.readString();
+				String scoresArray[] = scoresString.split(",");
+				int counter = 0;
+				for (int x = 0; x < 10; x++) {
+					for (int y = 0; y < 2; y++) {
+						allTheScoresStrings[x][y] = scoresArray[counter];
+						counter++;
+					}
+				}
+			}
+		} catch (Exception e) {
+		}
 	}
 
 	public void setLevel (int level) {
@@ -48,34 +62,39 @@ public class SavedStuff {
 	public void saveLevelAndScore (int level, int score) {
 		newRecord = false;
 		previousScore = score;
-		System.out.println("saveLevelAndScore in.");
 		for (int x = 0; x < 10; x++) {
-			System.out.println("saveLevelAndScore pass " + x);
 			if (score > scoreStringToInt(x)) {
 				newRecord = true;
 
-				System.out.println("saveLevelAndScore in if.");
 				moveScoresDown(x);
 				allTheScoresStrings[x][LEVEL] = String.valueOf(level);
 				allTheScoresStrings[x][SCORE] = String.valueOf(score);
+				System.out.println("saveLevelAndScore x=" + x + " allScores[][]" + allTheScoresStrings[x][LEVEL] + " "
+					+ allTheScoresStrings[x][SCORE]);
 				return;
 			}
 		}
+
+	}
+
+	public void saveToFile () {
+		String scoresString = "";
+		FileHandle scoresHandle = Gdx.files.local("scores.txt");
+		for (int x = 0; x < 10; x++) {
+			for (int y = 0; y < 2; y++) {
+				scoresString += allTheScoresStrings[x][y];
+				scoresString += ",";
+			}
+		}
+		scoresHandle.writeString(scoresString, false);
 	}
 
 	public void checkScoreToTable () {
 		newRecord = false;
-		System.out.println("saveLevelAndScore in.");
 		for (int x = 0; x < 10; x++) {
-			System.out.println("saveLevelAndScore pass " + x);
 			if (previousScore > scoreStringToInt(x)) {
 				newRecord = true;
 				scoreToReplace = x;
-
-				System.out.println("saveLevelAndScore in if.");
-// moveScoresDown(x);
-// allTheScoresStrings[x][LEVEL] = String.valueOf(level);
-// allTheScoresStrings[x][SCORE] = String.valueOf(score);
 				return;
 			}
 		}
@@ -101,7 +120,6 @@ public class SavedStuff {
 	}
 
 	public boolean isPreviousScoreInTopScore () {
-		// FIXME
 		return newRecord;
 	}
 
@@ -110,7 +128,6 @@ public class SavedStuff {
 	}
 
 	public String getPreviousScore () {
-		// FIXME
 		return String.valueOf(previousScore);
 	}
 }
