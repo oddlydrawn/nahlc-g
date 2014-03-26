@@ -26,7 +26,6 @@ public class SavedStuff {
 	private String[][] allTheScoresStrings = { {"20", "100"}, {"19", "90"}, {"17", "80"}, {"18", "70"}, {"16", "60"},
 		{"15", "50"}, {"14", "40"}, {"13", "30"}, {"15", "25"}, {"15", "20"}};
 	private int previousScore;
-	private int previousLevel;
 	private int scoreToReplace;
 	private boolean newRecord;
 
@@ -52,10 +51,6 @@ public class SavedStuff {
 
 	public String getHighScore () {
 		return allTheScoresStrings[0][SCORE];
-	}
-
-	public void setLevel (int level) {
-		previousLevel = level;
 	}
 
 	public void setScore (int score) {

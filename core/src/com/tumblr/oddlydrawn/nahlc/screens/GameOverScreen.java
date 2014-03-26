@@ -65,7 +65,6 @@ public class GameOverScreen implements Screen {
 		Gdx.input.setInputProcessor(stage);
 		skin = new Skin();
 
-		savedStuff.setLevel(level);
 		savedStuff.setScore(score);
 
 		Pixmap pixmap = new Pixmap(1, 1, Format.RGBA8888);

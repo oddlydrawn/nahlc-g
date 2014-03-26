@@ -24,10 +24,10 @@ import com.tumblr.oddlydrawn.nahlc.Board;
 import com.tumblr.oddlydrawn.nahlc.Controller;
 import com.tumblr.oddlydrawn.nahlc.Floater;
 import com.tumblr.oddlydrawn.nahlc.Renderer;
-import com.tumblr.oddlydrawn.nahlc.SavedStuff;
 
 /** @author oddlydrawn */
 public class GameScreen implements Screen {
+	private final float TIME_TO_DISPOSE = 1.1f;
 	private Game game;
 	private Board board;
 	private Controller controller;
@@ -35,7 +35,8 @@ public class GameScreen implements Screen {
 	private Renderer renderer;
 	private Assets assets;
 	private Audio audio;
-	private SavedStuff savedStuff;
+	private float timer;
+	private boolean playedHurt;
 
 	public GameScreen (Game g) {
 		game = g;
@@ -73,8 +74,16 @@ public class GameScreen implements Screen {
 		if (floater.getGameOver() == false) {
 			controller.update(delta);
 		} else {
-			dispose();
-			game.setScreen(new GameOverScreen(game, board.getCurrentLevel(), board.getCurrentScore()));
+			timer += delta;
+			if (playedHurt == false) {
+				audio.playHurt();
+				playedHurt = true;
+			}
+			
+			if (timer > TIME_TO_DISPOSE) {
+				dispose();
+				game.setScreen(new GameOverScreen(game, board.getCurrentLevel(), board.getCurrentScore()));			
+			}
 		}
 		// Update board after inputs.
 		board.updateCombinedBoard();
@@ -108,5 +117,4 @@ public class GameScreen implements Screen {
 		audio.dispose();
 		assets.disposeGame();
 	}
-
 }
