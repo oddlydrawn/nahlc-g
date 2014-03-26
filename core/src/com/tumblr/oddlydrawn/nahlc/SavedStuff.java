@@ -58,7 +58,7 @@ public class SavedStuff {
 		checkScoreToTable();
 	}
 
-	public void saveLevelAndScore (int level, int score) {
+	public void updateLevelAndScore (int level, int score) {
 		newRecord = false;
 		previousScore = score;
 		for (int x = 0; x < 10; x++) {
@@ -68,15 +68,13 @@ public class SavedStuff {
 				moveScoresDown(x);
 				allTheScoresStrings[x][LEVEL] = String.valueOf(level);
 				allTheScoresStrings[x][SCORE] = String.valueOf(score);
-				System.out.println("saveLevelAndScore x=" + x + " allScores[][]" + allTheScoresStrings[x][LEVEL] + " "
-					+ allTheScoresStrings[x][SCORE]);
 				return;
 			}
 		}
 
 	}
 
-	public void saveToFile () {
+	public void saveScoresToFile () {
 		String scoresString = "";
 		FileHandle scoresHandle = Gdx.files.local("scores.txt");
 		for (int x = 0; x < 10; x++) {

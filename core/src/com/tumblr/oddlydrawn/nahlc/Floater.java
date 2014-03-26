@@ -395,7 +395,6 @@ public class Floater {
 		posFourTest.set(posFour.getX(), posFour.getY());
 
 		if (thereIsCollision()) {
-			System.out.println("GAME OVER");
 			gameOver = true;
 		}
 	}
