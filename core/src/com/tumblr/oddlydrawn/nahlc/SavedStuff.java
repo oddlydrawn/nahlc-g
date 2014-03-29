@@ -28,6 +28,7 @@ public class SavedStuff {
 	private int previousScore;
 	private int scoreToReplace;
 	private boolean newRecord;
+	private boolean upsideDown = true;
 
 	public SavedStuff () {
 		try {
@@ -126,5 +127,9 @@ public class SavedStuff {
 
 	public String getPreviousScore () {
 		return String.valueOf(previousScore);
+	}
+
+	public boolean getUpsideDown () {
+		return upsideDown;
 	}
 }

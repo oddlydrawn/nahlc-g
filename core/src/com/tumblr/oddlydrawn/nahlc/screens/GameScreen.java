@@ -65,6 +65,7 @@ public class GameScreen implements Screen {
 		floater.setAudio(audio);
 		controller.setAssets(assets);
 		controller.setCamera(renderer.getCam());
+		renderer.setController(controller);
 	}
 
 	@Override
@@ -79,10 +80,10 @@ public class GameScreen implements Screen {
 				audio.playHurt();
 				playedHurt = true;
 			}
-			
+
 			if (timer > TIME_TO_DISPOSE) {
 				dispose();
-				game.setScreen(new GameOverScreen(game, board.getCurrentLevel(), board.getCurrentScore()));			
+				game.setScreen(new GameOverScreen(game, board.getCurrentLevel(), board.getCurrentScore()));
 			}
 		}
 		// Update board after inputs.

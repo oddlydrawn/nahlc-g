@@ -72,7 +72,6 @@ public class Renderer {
 	private int tmpX;
 	private int tmpY;
 	private int nextShape;
-	private boolean drawUpsideDown = true;
 
 	/** Creates new objects and sets camera up. */
 	public Renderer () {
@@ -99,20 +98,17 @@ public class Renderer {
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
 
-		// Order matters. Board's empty squares serve as background.
-		if (drawUpsideDown) {
-			drawBoardUpsideDown(batch);
-		} else {
-			drawBoard(batch);
-		}
-
 		// Next shape isn't a board so it doesn't have empty squares to serve as a background.
 		drawNextShapeBackground(batch);
-		// and the next shape. Passing batch is totally dumb but I like it that way.
-		// Because I'm dumb. Get off your high horse because you're reading _my_ code. Neener neener.
-		// Ahhh, the conversations future me will enjoy because past me was thoughtful.
-		// I'm not crazy. I'm just not user-friendly.
-		drawNextShape(batch);
+
+		// Order matters. Board's empty squares serve as background.
+		if (savedStuff.getUpsideDown() == true) {
+			drawBoardUpsideDown(batch);
+			drawNextShapeUpsideDown(batch);
+		} else {
+			drawBoard(batch);
+			drawNextShape(batch);
+		}
 
 		assets.getLeftSprite().draw(batch);
 		assets.getRightSprite().draw(batch);
@@ -299,6 +295,97 @@ public class Renderer {
 		batch.draw(region, posFour.x, posFour.y, Assets.BLOCK_WIDTH, Assets.BLOCK_HEIGHT);
 	}
 
+	private void drawNextShapeUpsideDown (SpriteBatch batch) {
+		// Gets next shape and corresponding region.
+		nextShape = floater.getNextShape();
+		region = assets.getBlock(nextShape);
+
+		// Determines the basic coordinates needed to draw the right shape.
+		switch (nextShape) {
+		case I:
+			posOne.set(1, 1);
+			posTwo.set(1, 2);
+			posThree.set(1, 3);
+			posFour.set(1, 4);
+			break;
+		case O:
+			posOne.set(1, 2);
+			posTwo.set(2, 2);
+			posThree.set(1, 3);
+			posFour.set(2, 3);
+			break;
+		case T:
+			posOne.set(1, 2);
+			posTwo.set(1, 3);
+			posThree.set(2, 3);
+			posFour.set(1, 4);
+			break;
+		case J:
+			posOne.set(1, 2);
+			posTwo.set(1, 3);
+			posThree.set(1, 4);
+			posFour.set(2, 2);
+			break;
+		case L:
+			posOne.set(2, 2);
+			posTwo.set(2, 3);
+			posThree.set(2, 4);
+			posFour.set(1, 2);
+			break;
+		case S:
+			posOne.set(1, 2);
+			posTwo.set(1, 3);
+			posThree.set(2, 3);
+			posFour.set(2, 4);
+			break;
+		case Z:
+			posOne.set(2, 2);
+			posTwo.set(2, 3);
+			posThree.set(1, 3);
+			posFour.set(1, 4);
+			break;
+		}
+
+		// Y-inversion to draw next shape upside down
+		// TODO make more methods, maybe? to reuse the code upside shares with rightside up
+		// and just applyVerticalInversion() if isupsidedown() between getting positions and drawing
+		posOne.y = 5 - posOne.y;
+		posTwo.y = 5 - posTwo.y;
+		posThree.y = 5 - posThree.y;
+		posFour.y = 5 - posFour.y;
+
+		// Adds the distance from origin to block's coordinates.
+		posOne.x += NEXT_SHAPE_ORIGIN_X;
+		// Converts to pixels.
+		posOne.x *= Assets.BLOCK_WIDTH;
+
+		// Does the same with y coordinates.
+		posOne.y += NEXT_SHAPE_ORIGIN_Y;
+		posOne.y *= Assets.BLOCK_HEIGHT;
+
+		// Draws the single block.
+		batch.draw(region, posOne.x, posOne.y, Assets.BLOCK_WIDTH, Assets.BLOCK_HEIGHT);
+
+		// Et cetera, et cetera.
+		posTwo.x += NEXT_SHAPE_ORIGIN_X;
+		posTwo.x *= Assets.BLOCK_WIDTH;
+		posTwo.y += NEXT_SHAPE_ORIGIN_Y;
+		posTwo.y *= Assets.BLOCK_HEIGHT;
+		batch.draw(region, posTwo.x, posTwo.y, Assets.BLOCK_WIDTH, Assets.BLOCK_HEIGHT);
+
+		posThree.x += NEXT_SHAPE_ORIGIN_X;
+		posThree.x *= Assets.BLOCK_WIDTH;
+		posThree.y += NEXT_SHAPE_ORIGIN_Y;
+		posThree.y *= Assets.BLOCK_HEIGHT;
+		batch.draw(region, posThree.x, posThree.y, Assets.BLOCK_WIDTH, Assets.BLOCK_HEIGHT);
+
+		posFour.x += NEXT_SHAPE_ORIGIN_X;
+		posFour.x *= Assets.BLOCK_WIDTH;
+		posFour.y += NEXT_SHAPE_ORIGIN_Y;
+		posFour.y *= Assets.BLOCK_HEIGHT;
+		batch.draw(region, posFour.x, posFour.y, Assets.BLOCK_WIDTH, Assets.BLOCK_HEIGHT);
+	}
+
 	/** Numbers should be right justified, I think. This does that.
 	 * @return The X position needed to correctly right justify text. */
 	private float rightJustify (String s) {
@@ -325,5 +412,9 @@ public class Renderer {
 
 	public void resize (int width, int height) {
 		camera.setToOrtho(true, WIDTH, HEIGHT);
+	}
+
+	public void setController (Controller controller) {
+		controller.setSavedStuff(savedStuff);
 	}
 }
