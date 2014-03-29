@@ -72,6 +72,7 @@ public class Renderer {
 	private int tmpX;
 	private int tmpY;
 	private int nextShape;
+	private boolean drawUpsideDown = true;
 
 	/** Creates new objects and sets camera up. */
 	public Renderer () {
@@ -99,7 +100,12 @@ public class Renderer {
 		batch.begin();
 
 		// Order matters. Board's empty squares serve as background.
-		drawBoard(batch);
+		if (drawUpsideDown) {
+			drawBoardUpsideDown(batch);
+		} else {
+			drawBoard(batch);
+		}
+
 		// Next shape isn't a board so it doesn't have empty squares to serve as a background.
 		drawNextShapeBackground(batch);
 		// and the next shape. Passing batch is totally dumb but I like it that way.
@@ -159,6 +165,30 @@ public class Renderer {
 
 				// Gets the color of the block at combinedBoard's (x, y)
 				color = board.getCombinedBoardColor(x, y);
+
+				// Gets the corresponding textureRegion from assets.
+				region = assets.getBlock(color);
+
+				// Then we paint it to the screen. Isn't it pretty?
+				batch.draw(region, tmpX, tmpY, Assets.BLOCK_WIDTH, Assets.BLOCK_HEIGHT);
+			}
+		}
+	}
+
+	private void drawBoardUpsideDown (SpriteBatch batch) {
+		// Since board's y=0 is just padding for correct, simple drops, we omit that.
+		for (y = 0; y < Board.BOARD_HEIGHT - 1; y++) {
+			for (x = 0; x < Board.BOARD_WIDTH; x++) {
+				// Converts for() coordinates to pixels.
+				tmpX = x * Assets.BLOCK_WIDTH;
+				tmpY = y * Assets.BLOCK_HEIGHT;
+
+				// Adds the padding for pretty and even borders.
+				tmpX += PAD_HORIZONTAL;
+				tmpY += PAD_HORIZONTAL;
+
+				// Gets the color of the block at combinedBoard's (x, y)
+				color = board.getCombinedBoardColor(x, Board.BOARD_HEIGHT - 1 - y);
 
 				// Gets the corresponding textureRegion from assets.
 				region = assets.getBlock(color);
