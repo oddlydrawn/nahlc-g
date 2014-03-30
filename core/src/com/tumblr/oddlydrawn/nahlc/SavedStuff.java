@@ -23,8 +23,8 @@ import com.badlogic.gdx.files.FileHandle;
 public class SavedStuff {
 	private final int LEVEL = 0;
 	private final int SCORE = 1;
-	private String[][] allTheScoresStrings = { {"20", "100"}, {"19", "90"}, {"17", "80"}, {"18", "70"}, {"16", "60"},
-		{"15", "50"}, {"14", "40"}, {"13", "30"}, {"15", "25"}, {"15", "20"}};
+	private String[][] allTheScoresStrings = { {"9", "10000"}, {"8", "9000"}, {"7", "8000"}, {"6", "7000"}, {"5", "6000"},
+		{"4", "5000"}, {"3", "4000"}, {"2", "3000"}, {"1", "2000"}, {"0", "1000"}};
 	private int previousScore;
 	private int previousLevel;
 	private int scoreToReplace;
