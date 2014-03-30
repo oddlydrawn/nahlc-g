@@ -45,6 +45,7 @@ public class Controller {
 	private Rectangle pausedNoticeRect;
 	private Vector2 touchCoords;
 	private Vector3 unprojectedTouchCoords;
+	private SavedStuff savedStuff;
 	private float timeToDrop;
 	private float timeToMove;
 	private float timer;
@@ -192,14 +193,23 @@ public class Controller {
 
 	private void rotateRight () {
 		if (timeToMove > TIME_TO_MOVE) {
-			floater.rotateRight();
+			if (savedStuff.getUpsideDown() == true) {
+				floater.rotateLeft();
+			} else {
+				floater.rotateRight();
+			}
+
 			timeToMove = 0;
 		}
 	}
 
 	private void rotateLeft () {
 		if (timeToMove > TIME_TO_MOVE) {
-			floater.rotateLeft();
+			if (savedStuff.getUpsideDown() == true) {
+				floater.rotateRight();
+			} else {
+				floater.rotateLeft();
+			}
 			timeToMove = 0;
 		}
 	}
@@ -293,5 +303,9 @@ public class Controller {
 
 	public void setCamera (OrthographicCamera camera) {
 		this.camera = camera;
+	}
+
+	public void setSavedStuff (SavedStuff savedStuff) {
+		this.savedStuff = savedStuff;
 	}
 }

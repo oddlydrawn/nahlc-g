@@ -23,16 +23,16 @@ import com.badlogic.gdx.math.MathUtils;
 
 /** @author oddlydrawn */
 public class Floater {
-	public static final int MAX_NEXT_SHAPES = 14;
-	public static final int NUM_TYPES = 7;
-	public static final int NUM_NEXT_SHAPES = 2;
-	private final int I = 0;
-	private final int O = 1;
-	private final int T = 2;
-	private final int J = 3;
-	private final int L = 4;
-	private final int S = 5;
-	private final int Z = 6;
+	public static final int MAX_NEXT_SHAPES = 7; // 14
+	public static final int NUM_TYPES = 7; // 7
+	public static final int NUM_NEXT_SHAPES = 1; // 2
+	private final int I = 0; // 0
+	private final int O = 1; // 1
+	private final int T = 2; // 2
+	private final int J = 3; // 3
+	private final int L = 4; // 4
+	private final int S = 5; // 5
+	private final int Z = 6; // 6
 	// Collection of the next MAX_NEXT_SHAPES to make shape distribution fair..ish.
 	private ArrayList<Integer> listNextShapes;
 	private Board board;
@@ -395,7 +395,6 @@ public class Floater {
 		posFourTest.set(posFour.getX(), posFour.getY());
 
 		if (thereIsCollision()) {
-			System.out.println("GAME OVER");
 			gameOver = true;
 		}
 	}

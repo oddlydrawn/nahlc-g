@@ -21,24 +21,36 @@ import com.badlogic.gdx.audio.Sound;
 
 /** @author oddlydrawn */
 public class Audio {
-	Sound soundCollides;
-	Sound soundLaserish;
+	private final String COLLIDES_PATH = "data/sound/wallCollision2.wav";
+	private final String LASERISH_PATH = "data/sound/laserish.wav";
+	private final String HURT_PATH = "data/sound/hurt.wav";
+	private final float LOUD_VOLUME = 1.0f;
+	private final float SOFTER_VOLUME = 0.5f;
+	private Sound soundCollides;
+	private Sound soundLaserish;
+	private Sound soundHurt;
 
 	public Audio () {
-		soundCollides = Gdx.audio.newSound(Gdx.files.internal("data/sound/wallCollision2.wav"));
-		soundLaserish = Gdx.audio.newSound(Gdx.files.internal("data/sound/laserish.wav"));
+		soundCollides = Gdx.audio.newSound(Gdx.files.internal(COLLIDES_PATH));
+		soundLaserish = Gdx.audio.newSound(Gdx.files.internal(LASERISH_PATH));
+		soundHurt = Gdx.audio.newSound(Gdx.files.internal(HURT_PATH));
 	}
 
 	public void playCollides () {
-		soundCollides.play(1.0f);
+		soundCollides.play(LOUD_VOLUME);
 	}
 
 	public void playLaserish () {
-		soundLaserish.play(1.0f);
+		soundLaserish.play(SOFTER_VOLUME);
+	}
+	
+	public void playHurt() {
+		soundHurt.play(SOFTER_VOLUME);
 	}
 
 	public void dispose () {
 		soundCollides.dispose();
 		soundLaserish.dispose();
+		soundHurt.dispose();
 	}
 }

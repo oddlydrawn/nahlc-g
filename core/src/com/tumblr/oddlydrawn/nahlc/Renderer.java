@@ -98,15 +98,19 @@ public class Renderer {
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
 
-		// Order matters. Board's empty squares serve as background.
-		drawBoard(batch);
 		// Next shape isn't a board so it doesn't have empty squares to serve as a background.
 		drawNextShapeBackground(batch);
-		// and the next shape. Passing batch is totally dumb but I like it that way.
-		// Because I'm dumb. Get off your high horse because you're reading _my_ code. Neener neener.
-		// Ahhh, the conversations future me will enjoy because past me was thoughtful.
-		// I'm not crazy. I'm just not user-friendly.
-		drawNextShape(batch);
+
+		// Order matters. Board's empty squares serve as background.
+		if (savedStuff.getUpsideDown() == true) {
+			drawBoardUpsideDown(batch);
+			nextShapePosUpdate();
+			vertInvertNextShape();
+		} else {
+			drawBoard(batch);
+			nextShapePosUpdate();
+		}
+		drawNextShape();
 
 		assets.getLeftSprite().draw(batch);
 		assets.getRightSprite().draw(batch);
@@ -169,6 +173,30 @@ public class Renderer {
 		}
 	}
 
+	private void drawBoardUpsideDown (SpriteBatch batch) {
+		// Since board's y=0 is just padding for correct, simple drops, we omit that.
+		for (y = 0; y < Board.BOARD_HEIGHT - 1; y++) {
+			for (x = 0; x < Board.BOARD_WIDTH; x++) {
+				// Converts for() coordinates to pixels.
+				tmpX = x * Assets.BLOCK_WIDTH;
+				tmpY = y * Assets.BLOCK_HEIGHT;
+
+				// Adds the padding for pretty and even borders.
+				tmpX += PAD_HORIZONTAL;
+				tmpY += PAD_HORIZONTAL;
+
+				// Gets the color of the block at combinedBoard's (x, y)
+				color = board.getCombinedBoardColor(x, Board.BOARD_HEIGHT - 1 - y);
+
+				// Gets the corresponding textureRegion from assets.
+				region = assets.getBlock(color);
+
+				// Then we paint it to the screen. Isn't it pretty?
+				batch.draw(region, tmpX, tmpY, Assets.BLOCK_WIDTH, Assets.BLOCK_HEIGHT);
+			}
+		}
+	}
+
 	private void drawNextShapeBackground (SpriteBatch batch) {
 		region = assets.getBlock(BACKGROUND);
 		for (x = 0; x < 4; x++) {
@@ -186,7 +214,7 @@ public class Renderer {
 		}
 	}
 
-	private void drawNextShape (SpriteBatch batch) {
+	private void nextShapePosUpdate () {
 		// Gets next shape and corresponding region.
 		nextShape = floater.getNextShape();
 		region = assets.getBlock(nextShape);
@@ -236,7 +264,16 @@ public class Renderer {
 			posFour.set(1, 4);
 			break;
 		}
+	}
 
+	private void vertInvertNextShape () {
+		posOne.y = 5 - posOne.y;
+		posTwo.y = 5 - posTwo.y;
+		posThree.y = 5 - posThree.y;
+		posFour.y = 5 - posFour.y;
+	}
+
+	private void drawNextShape () {
 		// Adds the distance from origin to block's coordinates.
 		posOne.x += NEXT_SHAPE_ORIGIN_X;
 		// Converts to pixels.
@@ -295,5 +332,9 @@ public class Renderer {
 
 	public void resize (int width, int height) {
 		camera.setToOrtho(true, WIDTH, HEIGHT);
+	}
+
+	public void setController (Controller controller) {
+		controller.setSavedStuff(savedStuff);
 	}
 }

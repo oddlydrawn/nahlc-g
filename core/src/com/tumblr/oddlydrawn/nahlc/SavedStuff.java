@@ -26,9 +26,9 @@ public class SavedStuff {
 	private String[][] allTheScoresStrings = { {"9", "10000"}, {"8", "9000"}, {"7", "8000"}, {"6", "7000"}, {"5", "6000"},
 		{"4", "5000"}, {"3", "4000"}, {"2", "3000"}, {"1", "2000"}, {"0", "1000"}};
 	private int previousScore;
-	private int previousLevel;
 	private int scoreToReplace;
 	private boolean newRecord;
+	private boolean upsideDown = true;
 
 	public SavedStuff () {
 		try {
@@ -54,16 +54,12 @@ public class SavedStuff {
 		return allTheScoresStrings[0][SCORE];
 	}
 
-	public void setLevel (int level) {
-		previousLevel = level;
-	}
-
 	public void setScore (int score) {
 		previousScore = score;
 		checkScoreToTable();
 	}
 
-	public void saveLevelAndScore (int level, int score) {
+	public void updateLevelAndScore (int level, int score) {
 		newRecord = false;
 		previousScore = score;
 		for (int x = 0; x < 10; x++) {
@@ -73,15 +69,13 @@ public class SavedStuff {
 				moveScoresDown(x);
 				allTheScoresStrings[x][LEVEL] = String.valueOf(level);
 				allTheScoresStrings[x][SCORE] = String.valueOf(score);
-				System.out.println("saveLevelAndScore x=" + x + " allScores[][]" + allTheScoresStrings[x][LEVEL] + " "
-					+ allTheScoresStrings[x][SCORE]);
 				return;
 			}
 		}
 
 	}
 
-	public void saveToFile () {
+	public void saveScoresToFile () {
 		String scoresString = "";
 		FileHandle scoresHandle = Gdx.files.local("scores.txt");
 		for (int x = 0; x < 10; x++) {
@@ -133,5 +127,9 @@ public class SavedStuff {
 
 	public String getPreviousScore () {
 		return String.valueOf(previousScore);
+	}
+
+	public boolean getUpsideDown () {
+		return upsideDown;
 	}
 }

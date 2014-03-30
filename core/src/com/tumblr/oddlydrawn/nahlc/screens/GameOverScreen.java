@@ -65,7 +65,6 @@ public class GameOverScreen implements Screen {
 		Gdx.input.setInputProcessor(stage);
 		skin = new Skin();
 
-		savedStuff.setLevel(level);
 		savedStuff.setScore(score);
 
 		Pixmap pixmap = new Pixmap(1, 1, Format.RGBA8888);
@@ -87,21 +86,25 @@ public class GameOverScreen implements Screen {
 		textButtonStyle.font = skin.getFont("default");
 		skin.add("default", textButtonStyle);
 
+		// Background NinePatch image
 		Image boxPatchImage = new Image(assets.getBoxPatch());
 		boxPatchImage.setSize(Renderer.WIDTH - 40, Renderer.HEIGHT - 5);
 		boxPatchImage.setPosition(20, 2);
 		stage.addActor(boxPatchImage);
 
+		// Top Score's background NinePatch image
 		Image boxPatchImageTwo = new Image(assets.getBoxPatch());
 		boxPatchImageTwo.setSize(220, 295);
 		boxPatchImageTwo.setPosition(50, 90);
 		stage.addActor(boxPatchImageTwo);
 
+		// Single-column table that holds all the things.
 		rootTable = new Table();
 		rootTable.setFillParent(true);
 		stage.addActor(rootTable);
 		rootTable.debug();
 
+		// Three-column table that holds the top scores.
 		topScoreTable = new Table();
 		topScoreTable.debug();
 		topScoreTable.columnDefaults(0).width(73);
@@ -132,50 +135,40 @@ public class GameOverScreen implements Screen {
 
 		Label[][] allTheScores = new Label[3][11];
 
+		// Creates the labels for all the scores, populates them, and adds animations. 
 		for (int y = 0; y < 10; y++) {
 			for (int x = 0; x < 3; x++) {
 				switch (x) {
-				case 0:
+				case 0: // The labels from 1 - 10, left most to show score rank.
 					if (y == 9) {
 						allTheScores[x][y] = new Label(String.valueOf(y + 1) + ".", skin);
 					} else {
+						// Adds a space, for correct padding to numbers 1-9 (or the array indexes 0-8)
 						allTheScores[x][y] = new Label(" " + String.valueOf(y + 1) + ".", skin);
 					}
 					topScoreTable.add(allTheScores[x][y]);
 					break;
-				case 1:
+				case 1: // The labels with the Level associated with each score
 					allTheScores[x][y] = new Label(savedStuff.getLevel(y, x - 1), skin);
 					topScoreTable.add(allTheScores[x][y]);
 
 					if (savedStuff.isPreviousScoreInTopScore()) {
+						// Adds the drop animation to scores below the score to replace
 						if (y >= savedStuff.getScoreToReplace()) {
-							if (y == 9) {
-								allTheScores[x][y].addAction(Actions.sequence(Actions.delay(2f), Actions.delay(0.5f),
-									Actions.moveBy(0, -26, 2, Interpolation.bounceOut),
-									Actions.moveBy(0, -500, 2, Interpolation.bounceOut)));
-							} else {
 								allTheScores[x][y].addAction(Actions.sequence(Actions.delay(2f), Actions.delay(0.5f),
 									Actions.moveBy(0, -26, 2, Interpolation.bounceOut)));
-							}
 						}
-
 					}
-
 					break;
-				case 2:
+				case 2: // The labels with the Score associated with each rank and level
 					allTheScores[x][y] = new Label(savedStuff.getScore(y, x - 1), skin);
 					topScoreTable.add(allTheScores[x][y]).right();
 
 					if (savedStuff.isPreviousScoreInTopScore()) {
+						// Adds the drop animation to scores below the score to replace
 						if (y >= savedStuff.getScoreToReplace()) {
-							if (y == 9) {
-								allTheScores[x][y].addAction(Actions.sequence(Actions.delay(2f), Actions.delay(0.5f),
-									Actions.moveBy(0, -26, 2, Interpolation.bounceOut),
-									Actions.moveBy(0, -500, 2, Interpolation.bounceOut)));
-							} else {
 								allTheScores[x][y].addAction(Actions.sequence(Actions.delay(2f), Actions.delay(0.5f),
 									Actions.moveBy(0, -26, 2, Interpolation.bounceOut)));
-							}
 						}
 					}
 					break;
@@ -187,10 +180,9 @@ public class GameOverScreen implements Screen {
 		}
 
 		rootTable.add(titleImage);
-
 		rootTable.row();
+		
 		rootTable.add(scoreLabel).expand();
-
 		rootTable.row();
 
 		rootTable.add(topScoresLabel);
@@ -213,6 +205,7 @@ public class GameOverScreen implements Screen {
 		newGameButton.toBack();
 		mainMenuButton.toBack();
 
+		// Adds padding to Level and 10th rank strings for correct padding
 		String levelButtonString;
 		int mew = Integer.valueOf(String.valueOf(allTheScores[1][9].getText()));
 		if (mew < 10) {
@@ -230,15 +223,17 @@ public class GameOverScreen implements Screen {
 
 		TextButton previousLevelButton = new TextButton(previousLevelButtonString, skin);
 		TextButton previousScoreButton = new TextButton(previousScoreString, skin);
-
 		TextButton tenthLevelButton = new TextButton(levelButtonString, skin);
 		TextButton tenthScoreButton = new TextButton(String.valueOf(allTheScores[2][9].getText()), skin);
 
+		// Pads Button text with spaces for correct alignment
 		tenthLevelButton.setText(fillStringWithSpaces(String.valueOf(tenthLevelButton.getText())));
 		previousLevelButton.setText(fillStringWithSpaces(previousLevelButtonString));
 		stage.addActor(tenthLevelButton);
 		stage.addActor(tenthScoreButton);
 
+		// Groups to link the scores and levels for 10th-rank scores and the score just obtained
+		// Needed to apply transforms to buttons since transforming text isn't possible, I think.
 		Group group = new Group();
 		group.addActor(tenthScoreButton);
 		group.addActor(tenthLevelButton);
@@ -247,6 +242,7 @@ public class GameOverScreen implements Screen {
 		groupPrevious.addActor(previousLevelButton);
 		groupPrevious.addActor(previousScoreButton);
 
+		// Modifies score buttons positions for correct alignment with the rest of the table
 		tenthScoreButton.setPosition(144 - subPosFromLength(tenthScoreButton.getText().length()), 00);
 		previousScoreButton.setPosition(144 - subPosFromLength(previousScoreString.length()), 00);
 		tenthScoreButton.align(Align.left);
@@ -263,6 +259,7 @@ public class GameOverScreen implements Screen {
 
 		group.setTransform(true);
 
+		// Adds animation for drop and bounce then rotate and drop to 10th rank score
 		if (savedStuff.isPreviousScoreInTopScore()) {
 			group.setOrigin(group.getX() + group.getWidth() + 50, 10);
 			group.addAction(Actions.sequence(Actions.delay(2f), Actions.delay(0.5f),
@@ -271,7 +268,9 @@ public class GameOverScreen implements Screen {
 				Actions.moveBy(0, -120, 2, Interpolation.bounceOut)));
 		}
 
+		// Adds spaces to first score in top score table to have the same column width regardless of score size
 		allTheScores[2][0].setText(fillCSWithSpaces(allTheScores[2][0].getText()));
+		
 		mainMenuButton.addListener(new ChangeListener() {
 			public void changed (ChangeEvent event, Actor actor) {
 // game.setScreen(new MainMenuScreen(game));
@@ -285,17 +284,22 @@ public class GameOverScreen implements Screen {
 			}
 		});
 
+		// Sets correct vertical position for score just obtained
 		groupPrevious.setPosition(group.getX(), group.getY() + getVerticalPosSub(savedStuff.getScoreToReplace()));
 		groupPrevious.setTransform(true);
+		
+		// Score is now in position, this makes it invisible
 		groupPrevious.addAction(Actions.fadeOut(0.1f));
+		
+		// Fades the score in after the bottom-most score rotates and drops
 		if (savedStuff.isPreviousScoreInTopScore()) {
 			groupPrevious.addAction(Actions.sequence(Actions.delay(7.5f), Actions.fadeIn(1f)));
 		}
 		stage.addActor(groupPrevious);
 
-		savedStuff.saveLevelAndScore(level, score);
+		savedStuff.updateLevelAndScore(level, score);
 		try {
-			savedStuff.saveToFile();
+			savedStuff.saveScoresToFile();
 		} catch (Exception e) {
 		}
 	}
