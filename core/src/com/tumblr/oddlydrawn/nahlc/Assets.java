@@ -42,6 +42,7 @@ public class Assets {
 	private final String NEW_GAME_REGION = "newGame";
 	private final String NEW_RECORD_LARGE_REGION = "newRecordLarge";
 	private final String GAME_OVER_REGION = "gameOverLarge";
+	private final String TITLE_REGION = "title";
 	// The number of different color strips in the image.
 	private final int MAX_NUMBER_COLOR = 5;
 	private TextureRegion[][] textureRegions;
@@ -59,6 +60,7 @@ public class Assets {
 	private Sprite newGameSprite;
 	private Sprite newRecordSprite;
 	private Sprite gameOverSprite;
+	private Sprite titleSprite;
 	private NinePatch boxPatch;
 	private int colorIndex;
 	private int tmpX;
@@ -68,6 +70,12 @@ public class Assets {
 
 	public Assets () {
 
+	}
+
+	public void initMainMenu () {
+		atlas = new TextureAtlas(Gdx.files.internal(PACKED_ATLAS_PATH));
+		boxPatch = new NinePatch(atlas.createPatch(BOX_REGION));
+		titleSprite = new Sprite(atlas.findRegion(TITLE_REGION));
 	}
 
 	public void initGame () {
@@ -135,6 +143,10 @@ public class Assets {
 		atlas.dispose();
 	}
 
+	public void disposeMainMenu () {
+		atlas.dispose();
+	}
+
 	/** Get the correct TextureRegion for the correct color/color type.
 	 * @param color The color/shape Renderer wants.
 	 * @return */
@@ -198,5 +210,9 @@ public class Assets {
 
 	public NinePatch getBoxPatch () {
 		return boxPatch;
+	}
+
+	public Sprite getTitleSprite () {
+		return titleSprite;
 	}
 }

@@ -17,22 +17,110 @@
 package com.tumblr.oddlydrawn.nahlc.screens;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.NinePatch;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.tumblr.oddlydrawn.nahlc.Assets;
+import com.tumblr.oddlydrawn.nahlc.Renderer;
 
 /** @author oddlydrawn */
 public class MainMenuScreen implements Screen {
-	Game g;
+	private Game game;
+	private Stage stage;
+	private Table table;
+	private Assets assets;
+	private Skin skin;
 
 	public MainMenuScreen (Game g) {
-		this.g = g;
+		game = g;
+		assets = new Assets();
+		assets.initMainMenu();
+		stage = new Stage(new StretchViewport(Renderer.WIDTH, Renderer.HEIGHT));
+		Gdx.input.setInputProcessor(stage);
+		skin = new Skin();
+
+		skin.add("default", new BitmapFont(Gdx.files.internal("data/fonts/deja.fnt")));
+
+		skin.add("patch", new NinePatch(assets.getBoxPatch()));
+
+		Image boxPatchImage = new Image(assets.getBoxPatch());
+		boxPatchImage.setSize(Renderer.WIDTH - 40, Renderer.HEIGHT - 40);
+		boxPatchImage.setPosition(20, 22);
+		stage.addActor(boxPatchImage);
+
+		TextButtonStyle textButtonStyle = new TextButtonStyle();
+		textButtonStyle.font = skin.getFont("default");
+		textButtonStyle.up = new NinePatchDrawable(assets.getBoxPatch());
+		skin.add("default", textButtonStyle);
+
+		table = new Table();
+		table.setFillParent(true);
+		table.setPosition(0, 0);
+		stage.addActor(table);
+		table.debug();
+		table.debugTable();
+
+		Image titleImage = new Image(assets.getTitleSprite());
+		table.add(titleImage).padBottom(180f);
+		table.row();
+
+		TextButton newGameButton = new TextButton("New Game", skin);
+		table.add(newGameButton).padBottom(10f);
+		table.row();
+
+		TextButton optionsButton = new TextButton("Options", skin);
+		table.add(optionsButton).padBottom(10f);
+		table.row();
+
+		TextButton licenseButton = new TextButton("License", skin);
+		table.add(licenseButton).padBottom(10f);
+		table.row();
+
+		newGameButton.addListener(new ChangeListener() {
+			public void changed (ChangeEvent event, Actor actor) {
+				dispose();
+				game.setScreen(new GameScreen(game));
+			}
+		});
+
+		optionsButton.addListener(new ChangeListener() {
+			public void changed (ChangeEvent event, Actor actor) {
+				dispose();
+				game.setScreen(new GameScreen(game));
+			}
+		});
+
+		licenseButton.addListener(new ChangeListener() {
+			public void changed (ChangeEvent event, Actor actor) {
+				dispose();
+				game.setScreen(new LicenseScreen(game));
+			}
+		});
 	}
 
 	@Override
 	public void render (float delta) {
+		Gdx.gl.glClearColor(0.2f, 0.2f, 0.2f, 1);
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		stage.act(delta);
+		stage.draw();
 	}
 
 	@Override
 	public void resize (int width, int height) {
+		stage.getViewport().update(width, height, true);
 	}
 
 	@Override
@@ -53,6 +141,9 @@ public class MainMenuScreen implements Screen {
 
 	@Override
 	public void dispose () {
+		stage.dispose();
+		skin.dispose();
+		assets.disposeGame();
 	}
 
 }

@@ -269,6 +269,16 @@ public class Controller {
 		return false;
 	}
 
+	private boolean pressedNewGame () {
+
+		return false;
+	}
+
+	private boolean pressedMainMenu () {
+
+		return false;
+	}
+
 	// Resets timer.
 	public void resetTimer () {
 		timer = 0;

@@ -12,7 +12,7 @@ blocksSheetSmall
   index: -1
 box
   rotate: false
-  xy: 349, 170
+  xy: 319, 71
   size: 32, 32
   split: 11, 12, 11, 11
   orig: 32, 32
@@ -20,14 +20,14 @@ box
   index: -1
 down
   rotate: false
-  xy: 132, 68
+  xy: 349, 107
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 dropDown
   rotate: false
-  xy: 264, 54
+  xy: 264, 21
   size: 48, 48
   orig: 48, 48
   offset: 0, 0
@@ -41,21 +41,21 @@ gameOverLarge
   index: -1
 left
   rotate: false
-  xy: 132, 2
+  xy: 132, 68
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 mainMenu
   rotate: false
-  xy: 219, 204
+  xy: 219, 139
   size: 128, 32
   orig: 128, 32
   offset: 0, 0
   index: -1
 newGame
   rotate: false
-  xy: 349, 204
+  xy: 198, 71
   size: 119, 32
   orig: 119, 32
   offset: 0, 0
@@ -69,36 +69,43 @@ newRecordLarge
   index: -1
 pauseButton
   rotate: false
-  xy: 314, 56
+  xy: 415, 124
   size: 46, 46
   orig: 46, 46
   offset: 0, 0
   index: -1
 pausedNotice
   rotate: false
-  xy: 219, 170
+  xy: 219, 105
   size: 128, 32
   orig: 128, 32
   offset: 0, 0
   index: -1
 right
   rotate: false
-  xy: 219, 104
+  xy: 421, 172
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 rotateLeft
   rotate: false
-  xy: 285, 104
+  xy: 132, 2
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 rotateRight
   rotate: false
-  xy: 198, 38
+  xy: 198, 5
   size: 64, 64
   orig: 64, 64
+  offset: 0, 0
+  index: -1
+title
+  rotate: false
+  xy: 219, 173
+  size: 200, 63
+  orig: 200, 63
   offset: 0, 0
   index: -1

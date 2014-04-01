@@ -19,11 +19,7 @@ package com.tumblr.oddlydrawn.nahlc.screens;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Pixmap.Format;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -67,12 +63,6 @@ public class GameOverScreen implements Screen {
 
 		savedStuff.setScore(score);
 
-		Pixmap pixmap = new Pixmap(1, 1, Format.RGBA8888);
-		pixmap.setColor(Color.LIGHT_GRAY);
-		pixmap.fill();
-
-		// The following defines the defaults for Scene2D's skin
-		skin.add("grey", new Texture(pixmap));
 		skin.add("default", new BitmapFont(Gdx.files.internal("data/fonts/deja.fnt")));
 
 		LabelStyle labelStyle = new LabelStyle();
@@ -135,7 +125,7 @@ public class GameOverScreen implements Screen {
 
 		Label[][] allTheScores = new Label[3][11];
 
-		// Creates the labels for all the scores, populates them, and adds animations. 
+		// Creates the labels for all the scores, populates them, and adds animations.
 		for (int y = 0; y < 10; y++) {
 			for (int x = 0; x < 3; x++) {
 				switch (x) {
@@ -155,8 +145,8 @@ public class GameOverScreen implements Screen {
 					if (savedStuff.isPreviousScoreInTopScore()) {
 						// Adds the drop animation to scores below the score to replace
 						if (y >= savedStuff.getScoreToReplace()) {
-								allTheScores[x][y].addAction(Actions.sequence(Actions.delay(2f), Actions.delay(0.5f),
-									Actions.moveBy(0, -26, 2, Interpolation.bounceOut)));
+							allTheScores[x][y].addAction(Actions.sequence(Actions.delay(2f), Actions.delay(0.5f),
+								Actions.moveBy(0, -26, 2, Interpolation.bounceOut)));
 						}
 					}
 					break;
@@ -167,8 +157,8 @@ public class GameOverScreen implements Screen {
 					if (savedStuff.isPreviousScoreInTopScore()) {
 						// Adds the drop animation to scores below the score to replace
 						if (y >= savedStuff.getScoreToReplace()) {
-								allTheScores[x][y].addAction(Actions.sequence(Actions.delay(2f), Actions.delay(0.5f),
-									Actions.moveBy(0, -26, 2, Interpolation.bounceOut)));
+							allTheScores[x][y].addAction(Actions.sequence(Actions.delay(2f), Actions.delay(0.5f),
+								Actions.moveBy(0, -26, 2, Interpolation.bounceOut)));
 						}
 					}
 					break;
@@ -181,7 +171,7 @@ public class GameOverScreen implements Screen {
 
 		rootTable.add(titleImage);
 		rootTable.row();
-		
+
 		rootTable.add(scoreLabel).expand();
 		rootTable.row();
 
@@ -270,10 +260,11 @@ public class GameOverScreen implements Screen {
 
 		// Adds spaces to first score in top score table to have the same column width regardless of score size
 		allTheScores[2][0].setText(fillCSWithSpaces(allTheScores[2][0].getText()));
-		
+
 		mainMenuButton.addListener(new ChangeListener() {
 			public void changed (ChangeEvent event, Actor actor) {
-// game.setScreen(new MainMenuScreen(game));
+				dispose();
+				game.setScreen(new MainMenuScreen(game));
 			}
 		});
 
@@ -287,10 +278,10 @@ public class GameOverScreen implements Screen {
 		// Sets correct vertical position for score just obtained
 		groupPrevious.setPosition(group.getX(), group.getY() + getVerticalPosSub(savedStuff.getScoreToReplace()));
 		groupPrevious.setTransform(true);
-		
+
 		// Score is now in position, this makes it invisible
 		groupPrevious.addAction(Actions.fadeOut(0.1f));
-		
+
 		// Fades the score in after the bottom-most score rotates and drops
 		if (savedStuff.isPreviousScoreInTopScore()) {
 			groupPrevious.addAction(Actions.sequence(Actions.delay(7.5f), Actions.fadeIn(1f)));
