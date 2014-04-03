@@ -21,6 +21,8 @@ import com.badlogic.gdx.files.FileHandle;
 
 /** @author oddlydrawn */
 public class SavedStuff {
+	private final int SCORES_HEIGHT = 10;
+	private final int SCORES_WIDTH = 2;
 	private final int LEVEL = 0;
 	private final int SCORE = 1;
 	private String[][] allTheScoresStrings = { {"9", "10000"}, {"8", "9000"}, {"7", "8000"}, {"6", "7000"}, {"5", "6000"},
@@ -39,8 +41,8 @@ public class SavedStuff {
 				scoresString = scoresHandle.readString();
 				String scoresArray[] = scoresString.split(",");
 				int counter = 0;
-				for (int x = 0; x < 10; x++) {
-					for (int y = 0; y < 2; y++) {
+				for (int x = 0; x < SCORES_HEIGHT; x++) {
+					for (int y = 0; y < SCORES_WIDTH; y++) {
 						allTheScoresStrings[x][y] = scoresArray[counter];
 						counter++;
 					}
@@ -53,7 +55,7 @@ public class SavedStuff {
 	public void updateLevelAndScore (int level, int score) {
 		newRecord = false;
 		previousScore = score;
-		for (int x = 0; x < 10; x++) {
+		for (int x = 0; x < SCORES_HEIGHT; x++) {
 			if (score > getScoreStringToInt(x)) {
 				newRecord = true;
 
@@ -69,8 +71,8 @@ public class SavedStuff {
 	public void saveScoresToFile () {
 		String scoresString = "";
 		FileHandle scoresHandle = Gdx.files.local("scores.txt");
-		for (int x = 0; x < 10; x++) {
-			for (int y = 0; y < 2; y++) {
+		for (int x = 0; x < SCORES_HEIGHT; x++) {
+			for (int y = 0; y < SCORES_WIDTH; y++) {
 				scoresString += allTheScoresStrings[x][y];
 				scoresString += ",";
 			}
@@ -80,7 +82,7 @@ public class SavedStuff {
 
 	public void checkScoreToTable () {
 		newRecord = false;
-		for (int x = 0; x < 10; x++) {
+		for (int x = 0; x < SCORES_HEIGHT; x++) {
 			if (previousScore > getScoreStringToInt(x)) {
 				newRecord = true;
 				scoreToReplace = x;
@@ -94,7 +96,7 @@ public class SavedStuff {
 	}
 
 	public void moveScoresDown (int index) {
-		for (int x = 9; x > index; x--) {
+		for (int x = SCORES_HEIGHT - 1; x > index; x--) {
 			allTheScoresStrings[x][LEVEL] = allTheScoresStrings[x - 1][LEVEL];
 			allTheScoresStrings[x][SCORE] = allTheScoresStrings[x - 1][SCORE];
 		}
