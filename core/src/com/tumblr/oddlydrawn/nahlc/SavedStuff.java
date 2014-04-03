@@ -28,7 +28,7 @@ public class SavedStuff {
 	private int previousScore;
 	private int scoreToReplace;
 	private boolean newRecord;
-	private boolean upsideDown = true;
+	private boolean upsideDown = false;
 
 	public SavedStuff () {
 		try {
@@ -50,20 +50,11 @@ public class SavedStuff {
 		}
 	}
 
-	public String getHighScore () {
-		return allTheScoresStrings[0][SCORE];
-	}
-
-	public void setScore (int score) {
-		previousScore = score;
-		checkScoreToTable();
-	}
-
 	public void updateLevelAndScore (int level, int score) {
 		newRecord = false;
 		previousScore = score;
 		for (int x = 0; x < 10; x++) {
-			if (score > scoreStringToInt(x)) {
+			if (score > getScoreStringToInt(x)) {
 				newRecord = true;
 
 				moveScoresDown(x);
@@ -90,7 +81,7 @@ public class SavedStuff {
 	public void checkScoreToTable () {
 		newRecord = false;
 		for (int x = 0; x < 10; x++) {
-			if (previousScore > scoreStringToInt(x)) {
+			if (previousScore > getScoreStringToInt(x)) {
 				newRecord = true;
 				scoreToReplace = x;
 				return;
@@ -98,7 +89,7 @@ public class SavedStuff {
 		}
 	}
 
-	public int scoreStringToInt (int index) {
+	public int getScoreStringToInt (int index) {
 		return Integer.valueOf(allTheScoresStrings[index][SCORE]);
 	}
 
@@ -109,16 +100,21 @@ public class SavedStuff {
 		}
 	}
 
+	public void setScore (int score) {
+		previousScore = score;
+		checkScoreToTable();
+	}
+
+	public String getHighScore () {
+		return allTheScoresStrings[0][SCORE];
+	}
+
 	public String getLevel (int x, int y) {
 		return allTheScoresStrings[x][y];
 	}
 
 	public String getScore (int x, int y) {
 		return allTheScoresStrings[x][y];
-	}
-
-	public boolean isPreviousScoreInTopScore () {
-		return newRecord;
 	}
 
 	public int getScoreToReplace () {
@@ -129,7 +125,11 @@ public class SavedStuff {
 		return String.valueOf(previousScore);
 	}
 
-	public boolean getUpsideDown () {
+	public boolean isUpsideDown () {
 		return upsideDown;
+	}
+
+	public boolean isPreviousScoreInTopScore () {
+		return newRecord;
 	}
 }

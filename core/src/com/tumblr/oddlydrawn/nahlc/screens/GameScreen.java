@@ -72,7 +72,7 @@ public class GameScreen implements Screen {
 	public void render (float delta) {
 		// Process those inputs.
 // delta = Math.min(0.06f, Gdx.graphics.getDeltaTime());
-		if (floater.getGameOver() == false) {
+		if (floater.isGameOver() == false) {
 			controller.update(delta);
 		} else {
 			timer += delta;

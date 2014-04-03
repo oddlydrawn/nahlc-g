@@ -90,7 +90,7 @@ public class Controller {
 			pauseReleased = true;
 		}
 
-		if (floater.getPaused() == false) {
+		if (floater.isPaused() == false) {
 			processInput(delta);
 
 			// Auto drop down after a certain amount of time has passed.
@@ -184,7 +184,7 @@ public class Controller {
 
 	private void moveAllTheWayDown () {
 		if (timeToMove > TIME_TO_MOVE) {
-			while (floater.getGrounded() == false) {
+			while (floater.isGrounded() == false) {
 				floater.moveDown();
 				timeToMove = 0;
 			}
@@ -193,7 +193,7 @@ public class Controller {
 
 	private void rotateRight () {
 		if (timeToMove > TIME_TO_MOVE) {
-			if (savedStuff.getUpsideDown() == true) {
+			if (savedStuff.isUpsideDown() == true) {
 				floater.rotateLeft();
 			} else {
 				floater.rotateRight();
@@ -205,7 +205,7 @@ public class Controller {
 
 	private void rotateLeft () {
 		if (timeToMove > TIME_TO_MOVE) {
-			if (savedStuff.getUpsideDown() == true) {
+			if (savedStuff.isUpsideDown() == true) {
 				floater.rotateRight();
 			} else {
 				floater.rotateLeft();
@@ -263,19 +263,9 @@ public class Controller {
 	private boolean pressedPause () {
 		if (Gdx.input.isKeyPressed(Keys.P)) return true;
 		if (Gdx.input.isTouched() && pauseRect.contains(touchCoords)) return true;
-		if (floater.getPaused() == true) {
+		if (floater.isPaused() == true) {
 			if (Gdx.input.isTouched() && pausedNoticeRect.contains(touchCoords)) return true;
 		}
-		return false;
-	}
-
-	private boolean pressedNewGame () {
-
-		return false;
-	}
-
-	private boolean pressedMainMenu () {
-
 		return false;
 	}
 

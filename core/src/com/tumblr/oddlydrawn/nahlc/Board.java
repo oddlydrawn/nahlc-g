@@ -86,8 +86,8 @@ public class Board {
 		combinedBoard[floater.getPosThree().x][floater.getPosThree().y] = floater.getShapeColor();
 		combinedBoard[floater.getPosFour().x][floater.getPosFour().y] = floater.getShapeColor();
 
-		// If the floater has reached the bottom of the board of stopped on top of a block.
-		if (floater.getGrounded() == true) {
+		// If the floater has reached the bottom of the board or stopped on top of a block.
+		if (floater.isGrounded() == true) {
 			// Add the floater blocks to the board.
 			board[floater.getPosOne().x][floater.getPosOne().y] = floater.getShapeColor();
 			board[floater.getPosTwo().x][floater.getPosTwo().y] = floater.getShapeColor();

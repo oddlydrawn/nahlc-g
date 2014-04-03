@@ -456,10 +456,6 @@ public class Floater {
 			+ posFour.y + ")");
 	}
 
-	public boolean getPaused () {
-		return paused;
-	}
-
 	public void togglePaused () {
 		if (paused) {
 			paused = false;
@@ -468,13 +464,17 @@ public class Floater {
 		}
 	}
 
-	public boolean getGameOver () {
+	public boolean isPaused () {
+		return paused;
+	}
+
+	public boolean isGameOver () {
 		return gameOver;
 	}
 
 	/** Board needs to know when floater is grounded to permanently place floater blocks on combinedBoard & to createNew() floater.
 	 * @return */
-	boolean getGrounded () {
+	public boolean isGrounded () {
 		return grounded;
 	}
 

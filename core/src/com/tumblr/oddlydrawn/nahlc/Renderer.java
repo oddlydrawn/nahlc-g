@@ -102,7 +102,7 @@ public class Renderer {
 		drawNextShapeBackground(batch);
 
 		// Order matters. Board's empty squares serve as background.
-		if (savedStuff.getUpsideDown() == true) {
+		if (savedStuff.isUpsideDown() == true) {
 			drawBoardUpsideDown(batch);
 			nextShapePosUpdate();
 			vertInvertNextShape();
@@ -141,7 +141,7 @@ public class Renderer {
 			font.draw(batch, tmpString, rightJustify(tmpString), 250);
 		}
 
-		if (floater.getPaused() == true) {
+		if (floater.isPaused() == true) {
 			assets.getBoxPatch().draw(batch, Assets.BLOCK_WIDTH * PAD_TWO, Assets.BLOCK_HEIGHT * PAD_TWO,
 				(Board.BOARD_WIDTH - PAD_TWO) * Assets.BLOCK_WIDTH, (Board.BOARD_HEIGHT - PAD_THREE) * Assets.BLOCK_HEIGHT);
 			assets.getPauseNoticeSprite().draw(batch);
