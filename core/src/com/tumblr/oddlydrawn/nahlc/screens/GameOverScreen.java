@@ -61,6 +61,7 @@ public class GameOverScreen implements Screen {
 		Gdx.input.setInputProcessor(stage);
 		skin = new Skin();
 
+		savedStuff.loadScores();
 		savedStuff.setScore(score);
 
 		skin.add("default", new BitmapFont(Gdx.files.internal("data/fonts/deja.fnt")));

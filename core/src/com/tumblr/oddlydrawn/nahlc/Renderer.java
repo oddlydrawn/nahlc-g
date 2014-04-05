@@ -86,6 +86,7 @@ public class Renderer {
 		posFour = new Coords();
 		savedStuff = new SavedStuff();
 
+		savedStuff.loadScores();
 		highScoreString = savedStuff.getHighScore();
 		highScore = Integer.parseInt(savedStuff.getHighScore());
 	}

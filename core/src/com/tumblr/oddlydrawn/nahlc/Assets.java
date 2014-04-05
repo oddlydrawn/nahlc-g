@@ -44,7 +44,7 @@ public class Assets {
 	private final String GAME_OVER_REGION = "gameOverLarge";
 	private final String TITLE_REGION = "title";
 	// The number of different color strips in the image.
-	private final int MAX_NUMBER_COLOR = 5;
+	private final int MAX_NUMBER_COLOR = 5; // 5
 	private TextureRegion[][] textureRegions;
 	private TextureAtlas atlas;
 	private AtlasRegion blocksAtlas;
