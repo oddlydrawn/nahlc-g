@@ -87,6 +87,7 @@ public class Renderer {
 		savedStuff = new SavedStuff();
 
 		savedStuff.loadScores();
+		savedStuff.loadPreferences();
 		highScoreString = savedStuff.getHighScore();
 		highScore = Integer.parseInt(savedStuff.getHighScore());
 	}
@@ -317,6 +318,9 @@ public class Renderer {
 
 	public void setFloater (Floater floater) {
 		this.floater = floater;
+		int bagSize = savedStuff.getBagSize();
+		floater.setBagSize(bagSize);
+		System.out.println("renderer has set floater and bag size");
 	}
 
 	public void setAssets (Assets assets) {

@@ -17,6 +17,7 @@
 package com.tumblr.oddlydrawn.nahlc.screens;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.tumblr.oddlydrawn.nahlc.Assets;
 import com.tumblr.oddlydrawn.nahlc.Audio;
@@ -54,6 +55,7 @@ public class GameScreen implements Screen {
 		controller.setFloater(floater);
 		floater.setBoard(board);
 		board.createBoard();
+		renderer.setFloater(floater);
 		floater.createNew();
 		renderer.setBoard(board);
 		board.setFloater(floater);
@@ -61,7 +63,6 @@ public class GameScreen implements Screen {
 		board.setAssets(assets);
 		board.setController(controller);
 		board.setAudio(audio);
-		renderer.setFloater(floater);
 		floater.setAudio(audio);
 		controller.setAssets(assets);
 		controller.setCamera(renderer.getCam());
@@ -71,7 +72,7 @@ public class GameScreen implements Screen {
 	@Override
 	public void render (float delta) {
 		// Process those inputs.
-// delta = Math.min(0.06f, Gdx.graphics.getDeltaTime());
+		delta = Math.min(0.06f, Gdx.graphics.getDeltaTime());
 		if (floater.isGameOver() == false) {
 			controller.update(delta);
 		} else {

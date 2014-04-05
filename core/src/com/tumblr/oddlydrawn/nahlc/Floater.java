@@ -18,6 +18,7 @@ package com.tumblr.oddlydrawn.nahlc;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Random;
 
 import com.badlogic.gdx.math.MathUtils;
 
@@ -48,6 +49,7 @@ public class Floater {
 	private Coords posFourTest;
 	private Coords rotatedCoords;
 	private Coords tmpCoords;
+	private Random random;
 	private Audio audio;
 	// mids are distance from origin.
 	private float midX;
@@ -62,13 +64,17 @@ public class Floater {
 	private int nextShapeCounter;
 	private int x;
 	private int y;
+	private int bagSize;
+	private int nextRandomShapeType;
 	private boolean grounded;
 	private boolean gameOver;
 	private boolean paused;
+	private boolean randomNextShapes;
 
 	/** Constructor that makes all the new objects. */
 	public Floater () {
 		// New all the objects.
+		random = new Random();
 		posOne = new Coords();
 		posTwo = new Coords();
 		posThree = new Coords();
@@ -84,18 +90,6 @@ public class Floater {
 
 		listNextShapes = new ArrayList<Integer>();
 
-		// Creates NUM_NEXT_SHAPES sets of NUM_TYPES (2 set of 7, currently).
-		for (x = 0; x < NUM_NEXT_SHAPES; x++) {
-			for (y = 0; y < NUM_TYPES; y++) {
-				listNextShapes.add(y);
-			}
-		}
-
-		// TODO I would have preferred an array and have a min distance apart for shapes... but that's extra work for now.
-		Collections.shuffle(listNextShapes);
-
-		// Renderer needs to draw the next shape.
-		nextShapeCounter = 0;
 	}
 
 	/** After being called by Controller, tries to move left, if no collisions are found it will applyCoordChange() */
@@ -323,19 +317,25 @@ public class Floater {
 
 	/** Spawns a block at the top of the board when a new piece is needed. */
 	public void createNew () {
-		// Makes sure we don't exceed MAX_NEXT_SHAPES before setting shapeType.
-		if (nextShapeCounter >= MAX_NEXT_SHAPES) {
-			nextShapeCounter = 0;
-			Collections.shuffle(listNextShapes);
-		}
+		System.out.println("randomNextShapes = " + randomNextShapes);
+		if (randomNextShapes == true) {
+			shapeType = nextRandomShapeType;
+			nextRandomShapeType = random.nextInt(NUM_TYPES);
+		} else {
+			// Makes sure we don't exceed MAX_NEXT_SHAPES before setting shapeType.
+			if (nextShapeCounter >= MAX_NEXT_SHAPES) {
+				nextShapeCounter = 0;
+				Collections.shuffle(listNextShapes);
+			}
 
-		shapeType = listNextShapes.get(nextShapeCounter);
-		nextShapeCounter++;
+			shapeType = listNextShapes.get(nextShapeCounter);
+			nextShapeCounter++;
 
-		// Pre and post checks needed to actually use shapes Zero through last shape in collection.
-		if (nextShapeCounter >= MAX_NEXT_SHAPES) {
-			nextShapeCounter = 0;
-			Collections.shuffle(listNextShapes);
+			// Pre and post checks needed to actually use shapes Zero through last shape in collection.
+			if (nextShapeCounter >= MAX_NEXT_SHAPES) {
+				nextShapeCounter = 0;
+				Collections.shuffle(listNextShapes);
+			}
 		}
 
 		// Can't very well stop before we've begun.
@@ -487,6 +487,9 @@ public class Floater {
 	/** Get's next shape to give that hint to player because everyone was doing it.
 	 * @return */
 	public int getNextShape () {
+		if (randomNextShapes == true) {
+			return nextRandomShapeType;
+		}
 		return listNextShapes.get(nextShapeCounter);
 	}
 
@@ -522,5 +525,32 @@ public class Floater {
 	 * @param board */
 	public void setBoard (Board board) {
 		this.board = board;
+	}
+
+	public void setBagSize (int bagSize) {
+		this.bagSize = bagSize;
+		if (bagSize == 0) setUseRandomNextShapes();
+		initBag();
+	}
+
+	public void initBag () {
+		// Creates NUM_NEXT_SHAPES sets of NUM_TYPES (2 set of 7, currently).
+		for (x = 0; x < bagSize; x++) {
+			for (y = 0; y < NUM_TYPES; y++) {
+				listNextShapes.add(y);
+			}
+		}
+		System.out.println("listNextShapes size=" + listNextShapes.size());
+
+		// TODO I would have preferred an array and have a min distance apart for shapes... but that's extra work for now.
+		Collections.shuffle(listNextShapes);
+
+		// Renderer needs to draw the next shape.
+		nextShapeCounter = 0;
+	}
+
+	public void setUseRandomNextShapes () {
+		randomNextShapes = true;
+		nextRandomShapeType = random.nextInt(NUM_TYPES);
 	}
 }
