@@ -534,7 +534,7 @@ public class Floater {
 	}
 
 	public void initBag () {
-		// Creates NUM_NEXT_SHAPES sets of NUM_TYPES (2 set of 7, currently).
+		// Creates NUM_NEXT_SHAPES sets of NUM_TYPES (1 set of 7, currently).
 		for (x = 0; x < bagSize; x++) {
 			for (y = 0; y < NUM_TYPES; y++) {
 				listNextShapes.add(y);
@@ -542,7 +542,6 @@ public class Floater {
 		}
 		System.out.println("listNextShapes size=" + listNextShapes.size());
 
-		// TODO I would have preferred an array and have a min distance apart for shapes... but that's extra work for now.
 		Collections.shuffle(listNextShapes);
 
 		// Renderer needs to draw the next shape.

@@ -67,6 +67,7 @@ public class GameScreen implements Screen {
 		controller.setAssets(assets);
 		controller.setCamera(renderer.getCam());
 		renderer.setController(controller);
+		renderer.setAudio(audio);
 	}
 
 	@Override

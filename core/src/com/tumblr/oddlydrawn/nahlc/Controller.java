@@ -74,8 +74,6 @@ public class Controller {
 	public void update (float delta) {
 		timer += delta;
 		timeToMove += delta;
-// touchCoords.x = Gdx.input.getX();
-// touchCoords.y = Gdx.input.getY();
 
 		projectTouchCoords();
 

@@ -320,7 +320,6 @@ public class Renderer {
 		this.floater = floater;
 		int bagSize = savedStuff.getBagSize();
 		floater.setBagSize(bagSize);
-		System.out.println("renderer has set floater and bag size");
 	}
 
 	public void setAssets (Assets assets) {
@@ -329,6 +328,13 @@ public class Renderer {
 
 	public void setBoard (Board board) {
 		this.board = board;
+	}
+
+	public void setAudio (Audio audio) {
+		boolean soundOn = savedStuff.isSoundOn();
+		boolean musicOn = savedStuff.isMusicOn();
+		audio.setSoundTo(soundOn);
+		audio.setMusicTo(musicOn);
 	}
 
 	public OrthographicCamera getCam () {

@@ -29,6 +29,8 @@ public class Audio {
 	private Sound soundCollides;
 	private Sound soundLaserish;
 	private Sound soundHurt;
+	private boolean soundOn;
+	private boolean musicOn;
 
 	public Audio () {
 		soundCollides = Gdx.audio.newSound(Gdx.files.internal(COLLIDES_PATH));
@@ -37,20 +39,28 @@ public class Audio {
 	}
 
 	public void playCollides () {
-		soundCollides.play(LOUD_VOLUME);
+		if (soundOn) soundCollides.play(LOUD_VOLUME);
 	}
 
 	public void playLaserish () {
-		soundLaserish.play(SOFTER_VOLUME);
+		if (soundOn) soundLaserish.play(SOFTER_VOLUME);
 	}
-	
-	public void playHurt() {
-		soundHurt.play(SOFTER_VOLUME);
+
+	public void playHurt () {
+		if (soundOn) soundHurt.play(SOFTER_VOLUME);
 	}
 
 	public void dispose () {
 		soundCollides.dispose();
 		soundLaserish.dispose();
 		soundHurt.dispose();
+	}
+
+	public void setSoundTo (boolean soundOn) {
+		this.soundOn = soundOn;
+	}
+
+	public void setMusicTo (boolean musicOn) {
+		this.musicOn = musicOn;
 	}
 }

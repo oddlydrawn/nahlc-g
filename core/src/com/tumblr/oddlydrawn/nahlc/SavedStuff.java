@@ -55,6 +55,9 @@ public class SavedStuff {
 		upsideDown = prefs.getBoolean(KEY_UPSIDE_DOWN, false);
 		soundOn = prefs.getBoolean(KEY_SOUND_ON, true);
 		musicOn = prefs.getBoolean(KEY_MUSIC_ON, true);
+		// FIXME debug, remove later
+		bagSize = 2;
+		soundOn = false;
 	}
 
 	public void savePreferences () {
