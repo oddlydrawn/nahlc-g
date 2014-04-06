@@ -164,7 +164,7 @@ public class Renderer {
 				tmpY += PAD_VERTICAL;
 
 				// Gets the color of the block at combinedBoard's (x, y)
-				color = board.getCombinedBoardColor(x, y);
+				color = board.getColor(x, y);
 
 				// Gets the corresponding textureRegion from assets.
 				region = assets.getBlock(color);
@@ -173,6 +173,20 @@ public class Renderer {
 				batch.draw(region, tmpX, tmpY, Assets.BLOCK_WIDTH, Assets.BLOCK_HEIGHT);
 			}
 		}
+		drawFloaterBlock(floater.getPosOne());
+		drawFloaterBlock(floater.getPosTwo());
+		drawFloaterBlock(floater.getPosThree());
+		drawFloaterBlock(floater.getPosFour());
+	}
+
+	private void drawFloaterBlock (Coords coords) {
+		tmpX = coords.getX() * Assets.BLOCK_WIDTH;
+		tmpY = coords.getY() * Assets.BLOCK_HEIGHT;
+		tmpX += PAD_HORIZONTAL;
+		tmpY += PAD_VERTICAL;
+		color = floater.getShapeColor();
+		region = assets.getBlock(color);
+		batch.draw(region, tmpX, tmpY, Assets.BLOCK_WIDTH, Assets.BLOCK_HEIGHT);
 	}
 
 	private void drawBoardUpsideDown (SpriteBatch batch) {
@@ -188,7 +202,7 @@ public class Renderer {
 				tmpY += PAD_HORIZONTAL;
 
 				// Gets the color of the block at combinedBoard's (x, y)
-				color = board.getCombinedBoardColor(x, Board.BOARD_HEIGHT - 1 - y);
+				color = board.getColor(x, Board.BOARD_HEIGHT - 1 - y);
 
 				// Gets the corresponding textureRegion from assets.
 				region = assets.getBlock(color);
@@ -197,6 +211,29 @@ public class Renderer {
 				batch.draw(region, tmpX, tmpY, Assets.BLOCK_WIDTH, Assets.BLOCK_HEIGHT);
 			}
 		}
+		drawFloaterBlockUpsideDown(floater.getPosOne());
+		drawFloaterBlockUpsideDown(floater.getPosTwo());
+		drawFloaterBlockUpsideDown(floater.getPosThree());
+		drawFloaterBlockUpsideDown(floater.getPosFour());
+	}
+
+	private void drawFloaterBlockUpsideDown (Coords coords) {
+		tmpX = coords.getX() * Assets.BLOCK_WIDTH;
+		// Upside down the vertical
+		tmpY = Board.BOARD_HEIGHT - 1 - coords.getY();
+		tmpY *= Assets.BLOCK_HEIGHT;
+
+		// Adds the padding for pretty and even borders.
+		tmpX += PAD_HORIZONTAL;
+		tmpY += PAD_HORIZONTAL;
+
+		color = floater.getShapeColor();
+
+		// Gets the corresponding textureRegion from assets.
+		region = assets.getBlock(color);
+
+		// Then we paint it to the screen. Isn't it pretty?
+		batch.draw(region, tmpX, tmpY, Assets.BLOCK_WIDTH, Assets.BLOCK_HEIGHT);
 	}
 
 	private void drawNextShapeBackground (SpriteBatch batch) {

@@ -89,7 +89,7 @@ public class GameScreen implements Screen {
 			}
 		}
 		// Update board after inputs.
-		board.updateCombinedBoard();
+		board.updateBoard();
 
 		// What do you think this is? O.o
 		renderer.render(delta);

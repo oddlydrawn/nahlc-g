@@ -37,7 +37,6 @@ public class Board {
 	private Assets assets;
 	private Audio audio;
 	private int[][] board;
-	private int[][] combinedBoard;
 	private int color;
 	private int x;
 	private int y;
@@ -52,7 +51,6 @@ public class Board {
 	/** Creates a blank board. Usually blank. */
 	public void createBoard () {
 		board = new int[BOARD_WIDTH][BOARD_HEIGHT];
-		combinedBoard = new int[BOARD_WIDTH][BOARD_HEIGHT];
 
 		// Empties out the entire board.
 		for (x = 0; x < BOARD_WIDTH; x++) {
@@ -70,22 +68,7 @@ public class Board {
 		numTotalCompletedRows = 0;
 	}
 
-	/** Updates all blocks of the combinedBoard which is a combination of Board's board and the Floater. This might belong in Board. */
-	public void updateCombinedBoard () {
-		// Goes through the board, copying all color fields.
-		for (x = 0; x < BOARD_WIDTH; x++) {
-			for (y = 0; y < BOARD_HEIGHT; y++) {
-				color = getColor(x, y);
-				combinedBoard[x][y] = color;
-			}
-		}
-
-		// Ugly but gets (x, y) of each floater block and sets the Color on the combinedBoard.
-		combinedBoard[floater.getPosOne().x][floater.getPosOne().y] = floater.getShapeColor();
-		combinedBoard[floater.getPosTwo().x][floater.getPosTwo().y] = floater.getShapeColor();
-		combinedBoard[floater.getPosThree().x][floater.getPosThree().y] = floater.getShapeColor();
-		combinedBoard[floater.getPosFour().x][floater.getPosFour().y] = floater.getShapeColor();
-
+	public void updateBoard () {
 		// If the floater has reached the bottom of the board or stopped on top of a block.
 		if (floater.isGrounded() == true) {
 			// Add the floater blocks to the board.
@@ -223,9 +206,9 @@ public class Board {
 	 * @param x
 	 * @param y
 	 * @return False if empty. True if filled. */
-	public int getCombinedBoardColor (int x, int y) {
-		return combinedBoard[x][y];
-	}
+// public int getCombinedBoardColor (int x, int y) {
+// return combinedBoard[x][y];
+// }
 
 	public int getCurrentLevel () {
 		return currentLevel;
@@ -235,7 +218,7 @@ public class Board {
 	 * @param x
 	 * @param y
 	 * @return */
-	private int getColor (int x, int y) {
+	public int getColor (int x, int y) {
 		return board[x][y];
 	}
 
