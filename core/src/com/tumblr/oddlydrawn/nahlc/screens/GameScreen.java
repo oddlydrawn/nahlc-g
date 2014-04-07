@@ -119,5 +119,6 @@ public class GameScreen implements Screen {
 	public void dispose () {
 		audio.dispose();
 		assets.disposeGame();
+		renderer.dispose();
 	}
 }

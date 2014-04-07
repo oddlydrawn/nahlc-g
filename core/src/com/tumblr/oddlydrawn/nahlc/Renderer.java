@@ -101,11 +101,11 @@ public class Renderer {
 		batch.begin();
 
 		// Next shape isn't a board so it doesn't have empty squares to serve as a background.
-		drawNextShapeBackground(batch);
+		drawNextShapeBackground();
 
 		// Order matters. Board's empty squares serve as background.
 		if (savedStuff.isUpsideDown() == true) {
-			drawBoardUpsideDown(batch);
+			drawBoardUpsideDown();
 			nextShapePosUpdate();
 			vertInvertNextShape();
 		} else {
@@ -189,7 +189,7 @@ public class Renderer {
 		batch.draw(region, tmpX, tmpY, Assets.BLOCK_WIDTH, Assets.BLOCK_HEIGHT);
 	}
 
-	private void drawBoardUpsideDown (SpriteBatch batch) {
+	private void drawBoardUpsideDown () {
 		// Since board's y=0 is just padding for correct, simple drops, we omit that.
 		for (y = 0; y < Board.BOARD_HEIGHT - 1; y++) {
 			for (x = 0; x < Board.BOARD_WIDTH; x++) {
@@ -236,7 +236,7 @@ public class Renderer {
 		batch.draw(region, tmpX, tmpY, Assets.BLOCK_WIDTH, Assets.BLOCK_HEIGHT);
 	}
 
-	private void drawNextShapeBackground (SpriteBatch batch) {
+	private void drawNextShapeBackground () {
 		region = assets.getBlock(BACKGROUND);
 		for (x = 0; x < 4; x++) {
 			for (y = 0; y < 6; y++) {
@@ -384,5 +384,10 @@ public class Renderer {
 
 	public void setController (Controller controller) {
 		controller.setSavedStuff(savedStuff);
+	}
+
+	public void dispose () {
+		font.dispose();
+		batch.dispose();
 	}
 }
