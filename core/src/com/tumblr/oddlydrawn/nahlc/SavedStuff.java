@@ -58,7 +58,7 @@ public class SavedStuff {
 		// FIXME debug, remove later
 		bagSize = 2;
 		soundOn = false;
-		upsideDown = true;
+		upsideDown = false;
 	}
 
 	public void savePreferences () {

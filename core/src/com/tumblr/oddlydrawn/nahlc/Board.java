@@ -47,6 +47,7 @@ public class Board {
 	private int completedLines;
 	private int numTotalBlocks;
 	private short counter;
+	private int levelMultiplier;
 
 	/** Creates a blank board. Usually blank. */
 	public void createBoard () {
@@ -89,6 +90,7 @@ public class Board {
 
 				// Keeps track of the total number of blocks currently on the board.
 				numTotalBlocks -= completedLines * BOARD_WIDTH;
+				calcLevelScoreMultiplier();
 
 				switch (completedLines) {
 				case SINGLE:
@@ -149,19 +151,23 @@ public class Board {
 	}
 
 	private void increaseScoreSingle () {
-		currentScore += SCORE_INCREASE_SINGLE * numTotalBlocks;
+		currentScore += (levelMultiplier + SCORE_INCREASE_SINGLE) * numTotalBlocks;
 	}
 
 	private void increaseScoreDouble () {
-		currentScore += SCORE_INCREASE_DOUBLE * numTotalBlocks;
+		currentScore += (levelMultiplier + SCORE_INCREASE_DOUBLE) * numTotalBlocks;
 	}
 
 	private void increaseScoreTriple () {
-		currentScore += SCORE_INCREASE_TRIPLE * numTotalBlocks;
+		currentScore += (levelMultiplier + SCORE_INCREASE_TRIPLE) * numTotalBlocks;
 	}
 
 	private void increaseScoreNahlc () {
-		currentScore += SCORE_INCREASE_NAHLC * numTotalBlocks;
+		currentScore += (levelMultiplier + SCORE_INCREASE_NAHLC) * numTotalBlocks;
+	}
+
+	private void calcLevelScoreMultiplier () {
+		levelMultiplier = currentLevel / 2;
 	}
 
 	/** Checks if block in a row is solid.
