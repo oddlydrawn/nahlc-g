@@ -16,6 +16,8 @@
 
 package com.tumblr.oddlydrawn.nahlc;
 
+import java.util.Random;
+
 /** @author oddlydrawn */
 public class Board {
 	public static final int SCORE_INCREASE_GROUNDED = 1; // 1
@@ -60,12 +62,6 @@ public class Board {
 			}
 		}
 
-		// Empties out the entire combinedBoard.
-		for (x = 0; x < Board.BOARD_WIDTH; x++) {
-			for (y = 0; y < Board.BOARD_HEIGHT; y++) {
-				board[x][y] = EMPTY;
-			}
-		}
 		numTotalCompletedRows = 0;
 	}
 
@@ -111,7 +107,6 @@ public class Board {
 
 			controller.resetTimer();
 			controller.resetHeldTimer();
-			// Spawn a 'new' floater.
 			floater.createNew();
 
 			currentScore += SCORE_INCREASE_GROUNDED;
@@ -167,7 +162,26 @@ public class Board {
 	}
 
 	private void calcLevelScoreMultiplier () {
-		levelMultiplier = currentLevel / 2;
+		levelMultiplier = currentLevel;
+	}
+
+	public void fillWithBlocks (int numRowsToFill) {
+		Random r = new Random();
+		int tmpX;
+		// Empties out the entire combinedBoard.
+		for (y = BOARD_HEIGHT - 1; y >= BOARD_HEIGHT - numRowsToFill; y--) {
+
+			for (x = 0; x < BOARD_WIDTH; x++) {
+				board[x][y] = 0;
+			}
+			tmpX = r.nextInt(BOARD_WIDTH / 2);
+			board[tmpX][y] = EMPTY;
+			tmpX = (BOARD_WIDTH / 2) + r.nextInt(BOARD_WIDTH / 2);
+			board[tmpX][y] = EMPTY;
+		}
+
+		numTotalBlocks = BOARD_WIDTH - 2;
+		numTotalBlocks *= numRowsToFill;
 	}
 
 	/** Checks if block in a row is solid.
@@ -207,14 +221,6 @@ public class Board {
 		}
 		return counter;
 	}
-
-	/** Checks if the coordinate on the combinedBoard is filled using ints.
-	 * @param x
-	 * @param y
-	 * @return False if empty. True if filled. */
-// public int getCombinedBoardColor (int x, int y) {
-// return combinedBoard[x][y];
-// }
 
 	public int getCurrentLevel () {
 		return currentLevel;

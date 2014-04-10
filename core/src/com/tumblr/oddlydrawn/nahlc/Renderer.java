@@ -25,31 +25,31 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 /** @author oddlydrawn */
 public class Renderer {
-	final public static float WIDTH = 320;
-	final public static float HEIGHT = 480;
+	final public static float WIDTH = 320; // 320
+	final public static float HEIGHT = 480; // 480
 	private final String FONT_LOC = "data/fonts/deja.fnt";
 	private final String SCORE = "Score:";
 	private final String LEVEL = "Level:";
 	private final String HI_SCORE = "HiScore:";
-	private final float GLYPH_WIDTH = 11;
-	private final float RIGHT_ORIGIN = 300;
-	private final float LOVELY_GRAY = 0.18f;
-	private final int NEXT_SHAPE_ORIGIN_X = 15;
-	private final int NEXT_SHAPE_ORIGIN_Y = 1;
-	private final int NEXT_SHAPE_BG_X = 15;
-	private final int NEXT_SHAPE_BG_Y = 1;
-	private final int PAD_HORIZONTAL = 16; // 80
-	private final int PAD_VERTICAL = 0; // 40
-	private final int BACKGROUND = 7;
-	private final int PAD_THREE = 3;
-	private final int PAD_TWO = 2;
-	private final int I = 0;
-	private final int O = 1;
-	private final int T = 2;
-	private final int J = 3;
-	private final int L = 4;
-	private final int S = 5;
-	private final int Z = 6;
+	private final float GLYPH_WIDTH = 11; // 11
+	private final float RIGHT_ORIGIN = 300; // 300
+	private final float LOVELY_GRAY = 0.18f; // 0.18f
+	private final int NEXT_SHAPE_ORIGIN_X = 15; // 15
+	private final int NEXT_SHAPE_ORIGIN_Y = 1; // 1
+	private final int NEXT_SHAPE_BG_X = 15; // 15
+	private final int NEXT_SHAPE_BG_Y = 1; // 1
+	private final int PAD_HORIZONTAL = 16; // 16
+	private final int PAD_VERTICAL = 0; // 0
+	private final int BACKGROUND = 7; // 7
+	private final int PAD_THREE = 3; // 3
+	private final int PAD_TWO = 2; // 2
+	private final int I = 0; // 0
+	private final int O = 1; // 1
+	private final int T = 2; // 2
+	private final int J = 3; // 3
+	private final int L = 4; // 4
+	private final int S = 5; // 5
+	private final int Z = 6; // 6
 	private BitmapFont font;
 	private SpriteBatch batch;
 	private OrthographicCamera camera;
@@ -84,12 +84,7 @@ public class Renderer {
 		posTwo = new Coords();
 		posThree = new Coords();
 		posFour = new Coords();
-		savedStuff = new SavedStuff();
 
-		savedStuff.loadScores();
-		savedStuff.loadPreferences();
-		highScoreString = savedStuff.getHighScore();
-		highScore = Integer.parseInt(savedStuff.getHighScore());
 	}
 
 	/** render() renders stuff, clears the screen. */
@@ -384,6 +379,15 @@ public class Renderer {
 
 	public void setController (Controller controller) {
 		controller.setSavedStuff(savedStuff);
+	}
+
+	public void setSavedStuff (SavedStuff savedStuff) {
+		this.savedStuff = savedStuff;
+
+		savedStuff.loadScores();
+		savedStuff.loadPreferences();
+		highScoreString = savedStuff.getHighScore();
+		highScore = Integer.parseInt(savedStuff.getHighScore());
 	}
 
 	public void dispose () {

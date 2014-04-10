@@ -48,7 +48,7 @@ public class Controller {
 	private SavedStuff savedStuff;
 	private float timeToDrop;
 	private float timeToMove;
-	private float timer;
+	private float timeToDropTimer;
 	private float heldTimer;
 	private boolean released;
 	private boolean pauseReleased;
@@ -72,7 +72,7 @@ public class Controller {
 	/** Checks for input and applies input to floater.
 	 * @param delta */
 	public void update (float delta) {
-		timer += delta;
+		timeToDropTimer += delta;
 		timeToMove += delta;
 
 		projectTouchCoords();
@@ -92,9 +92,9 @@ public class Controller {
 			processInput(delta);
 
 			// Auto drop down after a certain amount of time has passed.
-			if ((timer > timeToDrop)) { // && (timeToMove > TIME_TO_MOVE)) {
+			if ((timeToDropTimer > timeToDrop)) { // && (timeToMove > TIME_TO_MOVE)) {
 				floater.moveDown();
-				timer = 0;
+				timeToDropTimer = 0;
 			}
 		}
 
@@ -267,9 +267,9 @@ public class Controller {
 		return false;
 	}
 
-	// Resets timer.
+	// Resets timeToDropTimer.
 	public void resetTimer () {
-		timer = 0;
+		timeToDropTimer = 0;
 	}
 
 	// Resets held timer, useful after floater has been grounded.

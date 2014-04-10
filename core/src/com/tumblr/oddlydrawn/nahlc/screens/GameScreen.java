@@ -25,6 +25,7 @@ import com.tumblr.oddlydrawn.nahlc.Board;
 import com.tumblr.oddlydrawn.nahlc.Controller;
 import com.tumblr.oddlydrawn.nahlc.Floater;
 import com.tumblr.oddlydrawn.nahlc.Renderer;
+import com.tumblr.oddlydrawn.nahlc.SavedStuff;
 
 /** @author oddlydrawn */
 public class GameScreen implements Screen {
@@ -36,6 +37,7 @@ public class GameScreen implements Screen {
 	private Renderer renderer;
 	private Assets assets;
 	private Audio audio;
+	private SavedStuff savedStuff;
 	private float timer;
 	private boolean playedHurt;
 
@@ -48,10 +50,12 @@ public class GameScreen implements Screen {
 		renderer = new Renderer();
 		assets = new Assets();
 		audio = new Audio();
+		savedStuff = new SavedStuff();
 
 		assets.initGame();
 
 		// All the objects are best friends forever. Order probably matters, almost definitely.
+		renderer.setSavedStuff(savedStuff);
 		controller.setFloater(floater);
 		floater.setBoard(board);
 		board.createBoard();
@@ -68,6 +72,9 @@ public class GameScreen implements Screen {
 		controller.setCamera(renderer.getCam());
 		renderer.setController(controller);
 		renderer.setAudio(audio);
+
+		// XXX remove
+		board.fillWithBlocks(5);
 	}
 
 	@Override
