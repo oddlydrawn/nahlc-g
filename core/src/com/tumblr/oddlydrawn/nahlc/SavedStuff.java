@@ -25,11 +25,11 @@ public class SavedStuff {
 	private final String SCORES_UPSIDE_DOWN = "scoresUpside.txt"; // "scoresUpside.txt"
 	private final String SCORES_NORMAL = "scores.txt"; // "scores.txt"
 	private final String DELIMITER_STRING = ","; // ","
-	private final String PREFERENCES_STRING = "Preferences";
-	private final String KEY_BAG_SIZE = "bagSize";
-	private final String KEY_UPSIDE_DOWN = "upsideDown";
-	private final String KEY_SOUND_ON = "soundOn";
-	private final String KEY_MUSIC_ON = "soundOff";
+	public final static String PREFERENCES_STRING = "Preferences";
+	public final static String KEY_BAG_SIZE = "bagSize";
+	public final static String KEY_UPSIDE_DOWN = "upsideDown";
+	public final static String KEY_SOUND_ON = "soundOn";
+	public final static String KEY_MUSIC_ON = "soundOff";
 	private final int SCORES_HEIGHT = 10; // 10
 	private final int SCORES_WIDTH = 2; // 2
 	private final int LEVEL = 0; // 0
@@ -55,10 +55,6 @@ public class SavedStuff {
 		upsideDown = prefs.getBoolean(KEY_UPSIDE_DOWN, false);
 		soundOn = prefs.getBoolean(KEY_SOUND_ON, true);
 		musicOn = prefs.getBoolean(KEY_MUSIC_ON, true);
-		// FIXME debug, remove later
-		bagSize = 2;
-		soundOn = false;
-		upsideDown = false;
 	}
 
 	public void savePreferences () {
@@ -185,6 +181,27 @@ public class SavedStuff {
 
 	public boolean isUpsideDown () {
 		return upsideDown;
+	}
+
+	public void saveAll (Boolean sound, Boolean music, Boolean upside, int bag) {
+		prefs = Gdx.app.getPreferences(PREFERENCES_STRING);
+		prefs.putInteger(KEY_BAG_SIZE, bag);
+		prefs.putBoolean(KEY_SOUND_ON, sound);
+		prefs.putBoolean(KEY_MUSIC_ON, music);
+		prefs.putBoolean(KEY_UPSIDE_DOWN, upside);
+		savePreferences();
+	}
+
+	public void setSound (Boolean sound) {
+
+	}
+
+	public void setMusic (Boolean music) {
+
+	}
+
+	public void setUpsideDown (Boolean upside) {
+
 	}
 
 	public boolean isPreviousScoreInTopScore () {

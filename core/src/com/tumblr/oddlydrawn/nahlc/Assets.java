@@ -28,6 +28,7 @@ public class Assets {
 	public static final int BLOCK_WIDTH = 16;
 	public static final int BLOCK_HEIGHT = 16;
 	private final String PACKED_ATLAS_PATH = "data/gfx/packed.atlas";
+	private final String SETUP_PACKED_ATLAS_PATH = "data/gfx/setupPacked.atlas";
 	private final String BLOCKS_ATLAS_REGION = "blocksSheetSmall";
 	private final String LEFT_ATLAS_REGION = "left";
 	private final String RIGHT_ATLAS_REGION = "right";
@@ -43,6 +44,10 @@ public class Assets {
 	private final String NEW_RECORD_LARGE_REGION = "newRecordLarge";
 	private final String GAME_OVER_REGION = "gameOverLarge";
 	private final String TITLE_REGION = "title";
+	private final String CHECKED_REGION = "checked";
+	private final String UNCHECKED_REGION = "unchecked";
+	private final String SELECTED_REGION = "selectedButtonB";
+	private final String UNSELECTED_REGION = "unselectedButton";
 	// The number of different color strips in the image.
 	private final int MAX_NUMBER_COLOR = 5; // 5
 	private TextureRegion[][] textureRegions;
@@ -62,6 +67,10 @@ public class Assets {
 	private Sprite gameOverSprite;
 	private Sprite titleSprite;
 	private NinePatch boxPatch;
+	private AtlasRegion checkedSprite;
+	private AtlasRegion uncheckedSprite;
+	private AtlasRegion selectedSprite;
+	private AtlasRegion unselectedSprite;
 	private int colorIndex;
 	private int tmpX;
 	private int tmpY;
@@ -76,6 +85,15 @@ public class Assets {
 		atlas = new TextureAtlas(Gdx.files.internal(PACKED_ATLAS_PATH));
 		boxPatch = new NinePatch(atlas.createPatch(BOX_REGION));
 		titleSprite = new Sprite(atlas.findRegion(TITLE_REGION));
+	}
+
+	public void initSetupScreen () {
+		atlas = new TextureAtlas(Gdx.files.internal(SETUP_PACKED_ATLAS_PATH));
+		checkedSprite = new AtlasRegion(atlas.findRegion(CHECKED_REGION));
+		uncheckedSprite = new AtlasRegion(atlas.findRegion(UNCHECKED_REGION));
+		selectedSprite = new AtlasRegion(atlas.findRegion(SELECTED_REGION));
+		unselectedSprite = new AtlasRegion(atlas.findRegion(UNSELECTED_REGION));
+		boxPatch = new NinePatch(atlas.createPatch(BOX_REGION));
 	}
 
 	public void initGame () {
@@ -147,6 +165,10 @@ public class Assets {
 		atlas.dispose();
 	}
 
+	public void disposeSetupScreen () {
+		atlas.dispose();
+	}
+
 	/** Get the correct TextureRegion for the correct color/color type.
 	 * @param color The color/shape Renderer wants.
 	 * @return */
@@ -214,5 +236,21 @@ public class Assets {
 
 	public Sprite getTitleSprite () {
 		return titleSprite;
+	}
+
+	public AtlasRegion getCheckedSprite () {
+		return checkedSprite;
+	}
+
+	public AtlasRegion getUncheckedSprite () {
+		return uncheckedSprite;
+	}
+
+	public AtlasRegion getSelectedSprite () {
+		return selectedSprite;
+	}
+
+	public AtlasRegion getUnselectedSprite () {
+		return unselectedSprite;
 	}
 }

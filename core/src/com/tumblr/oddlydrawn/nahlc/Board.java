@@ -165,21 +165,26 @@ public class Board {
 		levelMultiplier = currentLevel;
 	}
 
+	/** Fills the bottom numRowsToFill of the board with blocks except for two empty blocks.
+	 * @param numRowsToFill The number of rows to fill from the bottom. Zero is regular empty board. */
 	public void fillWithBlocks (int numRowsToFill) {
 		Random r = new Random();
-		int tmpX;
-		// Empties out the entire combinedBoard.
-		for (y = BOARD_HEIGHT - 1; y >= BOARD_HEIGHT - numRowsToFill; y--) {
+		int tmp;
 
+		for (y = BOARD_HEIGHT - 1; y >= BOARD_HEIGHT - numRowsToFill; y--) {
 			for (x = 0; x < BOARD_WIDTH; x++) {
 				board[x][y] = 0;
 			}
-			tmpX = r.nextInt(BOARD_WIDTH / 2);
-			board[tmpX][y] = EMPTY;
-			tmpX = (BOARD_WIDTH / 2) + r.nextInt(BOARD_WIDTH / 2);
-			board[tmpX][y] = EMPTY;
+			// Empties out a random block on the left half of this row
+			tmp = r.nextInt(BOARD_WIDTH / 2);
+			board[tmp][y] = EMPTY;
+
+			// Empties out a random block on the right half of this row
+			tmp = (BOARD_WIDTH / 2) + r.nextInt(BOARD_WIDTH / 2);
+			board[tmp][y] = EMPTY;
 		}
 
+		// Calculate the number of total blocks we've added or we may have negative scores later.
 		numTotalBlocks = BOARD_WIDTH - 2;
 		numTotalBlocks *= numRowsToFill;
 	}

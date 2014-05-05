@@ -1,0 +1,55 @@
+
+setupPacked.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+box
+  rotate: false
+  xy: 2, 2
+  size: 32, 32
+  split: 11, 12, 11, 11
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+checked
+  rotate: false
+  xy: 266, 68
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+selectedButton
+  rotate: false
+  xy: 2, 36
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+selectedButtonB
+  rotate: false
+  xy: 68, 36
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+unchecked
+  rotate: false
+  xy: 36, 2
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+unselectedButton
+  rotate: false
+  xy: 134, 36
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+unselectedButtonB
+  rotate: false
+  xy: 200, 36
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1

@@ -73,15 +73,11 @@ public class MainMenuScreen implements Screen {
 		table.debugTable();
 
 		Image titleImage = new Image(assets.getTitleSprite());
-		table.add(titleImage).padBottom(180f);
+		table.add(titleImage).padBottom(200f);
 		table.row();
 
 		TextButton newGameButton = new TextButton("New Game", skin);
-		table.add(newGameButton).padBottom(10f);
-		table.row();
-
-		TextButton optionsButton = new TextButton("Options", skin);
-		table.add(optionsButton).padBottom(10f);
+		table.add(newGameButton).padBottom(20f);
 		table.row();
 
 		TextButton licenseButton = new TextButton("License", skin);
@@ -91,14 +87,7 @@ public class MainMenuScreen implements Screen {
 		newGameButton.addListener(new ChangeListener() {
 			public void changed (ChangeEvent event, Actor actor) {
 				dispose();
-				game.setScreen(new GameScreen(game));
-			}
-		});
-
-		optionsButton.addListener(new ChangeListener() {
-			public void changed (ChangeEvent event, Actor actor) {
-				dispose();
-				game.setScreen(new GameScreen(game));
+				game.setScreen(new SetupScreen(game));
 			}
 		});
 
@@ -145,5 +134,4 @@ public class MainMenuScreen implements Screen {
 		skin.dispose();
 		assets.disposeGame();
 	}
-
 }
