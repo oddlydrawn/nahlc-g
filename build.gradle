@@ -21,7 +21,7 @@ allprojects {
     version = "1.0"
     ext {
         appName = "NAHLC"
-        gdxVersion = "1.0.1-SNAPSHOT"
+        gdxVersion = "1.0.2-SNAPSHOT"
         roboVMVersion = "0.0.10"
     }
 

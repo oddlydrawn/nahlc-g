@@ -292,7 +292,10 @@ public class GameOverScreen implements Screen {
 		savedStuff.updateLevelAndScore(level, score);
 		try {
 			savedStuff.saveScoresToFile();
+		} catch (RuntimeException ex) {
+			ex.printStackTrace();
 		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 

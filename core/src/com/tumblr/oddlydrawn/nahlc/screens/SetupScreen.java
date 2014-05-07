@@ -40,25 +40,32 @@ import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.tumblr.oddlydrawn.nahlc.Assets;
+import com.tumblr.oddlydrawn.nahlc.Renderer;
 import com.tumblr.oddlydrawn.nahlc.SavedStuff;
 
 /** @author oddlydrawn */
 public class SetupScreen implements Screen {
-	final float PAD = 20f;
-	Game game;
-	Assets assets;
-	Stage stage;
-	Table table;
-	Skin skin;
+	private final float PAD = 20f;
+	private final String LABEL_SOUND = "Sound?";
+	private final String LABEL_MUSIC = "Music?";
+	private final String LABEL_UPSIDE = "Upside Down?";
+	private final String LABEL_LEVEL = "Level:";
+	private final String LABEL_BAG_SIZE = "Shape bag size: ";
+	private final String LABEL_START = "Start";
+	private final String FONT_PATH = "data/fonts/deja.fnt";
+	private Game game;
+	private Assets assets;
+	private Stage stage;
+	private Table table;
+	private Skin skin;
 	private boolean soundOn;
 	private boolean musicOn;
 	private boolean upsideDown = false;
 
 	public SetupScreen (Game g) {
 		game = g;
-
 		assets = new Assets();
-		stage = new Stage(new ExtendViewport(320, 480));
+		stage = new Stage(new ExtendViewport(Renderer.WIDTH, Renderer.HEIGHT));
 		Gdx.input.setInputProcessor(stage);
 		skin = new Skin();
 		assets.initSetupScreen();
@@ -68,38 +75,41 @@ public class SetupScreen implements Screen {
 		table.align(Align.left);
 		stage.addActor(table);
 
-		Table buttonsTable = new Table();
+		// Add default font to skin.
+		skin.add("default", new BitmapFont(Gdx.files.internal(FONT_PATH)));
 
-		skin.add("default", new BitmapFont(Gdx.files.internal("data/fonts/deja.fnt")));
-
+		// Create style for the level select checked and unchecked buttons with text (0-9).
 		ImageTextButtonStyle imageTextButtonStyle = new ImageTextButtonStyle();
 		imageTextButtonStyle.checked = new TextureRegionDrawable(assets.getSelectedSprite());
 		imageTextButtonStyle.up = new TextureRegionDrawable(assets.getUnselectedSprite());
 		imageTextButtonStyle.font = skin.getFont("default");
 		skin.add("default", imageTextButtonStyle);
 
+		// Create style for checkboxes with text beside them.
 		CheckBoxStyle checkBoxStyle = new CheckBoxStyle();
 		checkBoxStyle.checkboxOff = new TextureRegionDrawable(assets.getUncheckedSprite());
 		checkBoxStyle.checkboxOn = new TextureRegionDrawable(assets.getCheckedSprite());
 		checkBoxStyle.font = skin.getFont("default");
 		skin.add("default", checkBoxStyle);
 
+		// Create style for 9patch image button with text ("Start" button).
 		TextButtonStyle textButtonStyle = new TextButtonStyle();
 		textButtonStyle.font = skin.getFont("default");
 		textButtonStyle.up = new NinePatchDrawable(assets.getBoxPatch());
 		skin.add("default", textButtonStyle);
 
-		final CheckBox soundOnBox = new CheckBox("Sound?", skin);
+		final CheckBox soundOnBox = new CheckBox(LABEL_SOUND, skin);
 		table.add(soundOnBox);
 		table.row();
-
-		final CheckBox musicOnBox = new CheckBox("Music?", skin);
+		final CheckBox musicOnBox = new CheckBox(LABEL_MUSIC, skin);
 		table.add(musicOnBox);
 		table.row();
-
-		final CheckBox upsideDownBox = new CheckBox("Upside Down?", skin);
+		final CheckBox upsideDownBox = new CheckBox(LABEL_UPSIDE, skin);
 		table.add(upsideDownBox);
 		table.row();
+
+		// Create an embedded table to have its own cells and not mess up parent.
+		Table buttonsTable = new Table();
 
 		final ImageTextButton zero = new ImageTextButton("0", skin);
 		buttonsTable.add(zero);
@@ -134,7 +144,7 @@ public class SetupScreen implements Screen {
 		groupButtons.add(seven);
 		groupButtons.add(eight);
 		groupButtons.add(nine);
-		groupButtons.setMaxCheckCount(1);
+		groupButtons.setMaxCheckCount(1); // Awesome.
 		groupButtons.uncheckAll();
 		zero.setChecked(true);
 
@@ -142,17 +152,18 @@ public class SetupScreen implements Screen {
 		labelStyle.font = skin.getFont("default");
 		skin.add("default", labelStyle);
 
-		Label levelLabel = new Label("Level:", skin);
+		Label levelLabel = new Label(LABEL_LEVEL, skin);
 		table.add(levelLabel).padTop(PAD).align(Align.left);
 		table.row();
 
 		table.add(buttonsTable).padBottom(PAD);
 		table.row();
 
-		Label bagSize = new Label("Shape bag size: ", skin);
+		Label bagSize = new Label(LABEL_BAG_SIZE, skin);
 		table.add(bagSize).align(Align.left);
 		table.row();
 
+		// Create an embedded table to have its own cells and not mess up parent.
 		Table bagTable = new Table();
 
 		final ImageTextButton sizeRandom = new ImageTextButton("Rnd", skin);
@@ -175,20 +186,21 @@ public class SetupScreen implements Screen {
 		bagButtons.uncheckAll();
 		sizeSeven.setChecked(true);
 
-		TextButton startButton = new TextButton("Start", skin);
+		TextButton startButton = new TextButton(LABEL_START, skin);
 		table.add(startButton).padTop(PAD);
 		table.debugTable();
 
+		// Load preferences
 		SavedStuff savedStuff = new SavedStuff();
 		savedStuff.loadPreferences();
 		soundOn = savedStuff.isSoundOn();
 		musicOn = savedStuff.isMusicOn();
 		upsideDown = savedStuff.isUpsideDown();
 
+		// Set loaded preferences
 		soundOnBox.setChecked(soundOn);
 		musicOnBox.setChecked(musicOn);
 		upsideDownBox.setChecked(upsideDown);
-		System.out.println("sound: " + soundOn + "  music: " + musicOn + "  upside: " + upsideDown);
 
 		startButton.addListener(new ChangeListener() {
 			@Override
@@ -199,6 +211,7 @@ public class SetupScreen implements Screen {
 				int bag = 0;
 				int level = 0;
 
+				// Get selected starting level.
 				if (zero.isChecked()) {
 					level = 0;
 				} else if (one.isChecked()) {
@@ -221,6 +234,7 @@ public class SetupScreen implements Screen {
 					level = 9;
 				}
 
+				// Get selected randomized shape bag size
 				if (sizeRandom.isChecked()) {
 					bag = 0;
 				} else if (sizeSeven.isChecked()) {
@@ -235,11 +249,12 @@ public class SetupScreen implements Screen {
 				music = musicOnBox.isChecked();
 				upside = upsideDownBox.isChecked();
 
+				// Save preferences.
 				SavedStuff stuff = new SavedStuff();
-				stuff.saveAll(sound, music, upside, bag);
+				stuff.saveAll(sound, music, upside, bag, level);
 
 				dispose();
-				game.setScreen(new GameScreen(game, level));
+				game.setScreen(new GameScreen(game));
 			}
 		});
 	}
@@ -275,6 +290,8 @@ public class SetupScreen implements Screen {
 
 	@Override
 	public void dispose () {
+		stage.dispose();
+		skin.dispose();
 		assets.disposeSetupScreen();
 	}
 }

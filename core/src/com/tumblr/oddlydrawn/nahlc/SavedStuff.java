@@ -25,11 +25,12 @@ public class SavedStuff {
 	private final String SCORES_UPSIDE_DOWN = "scoresUpside.txt"; // "scoresUpside.txt"
 	private final String SCORES_NORMAL = "scores.txt"; // "scores.txt"
 	private final String DELIMITER_STRING = ","; // ","
-	public final static String PREFERENCES_STRING = "Preferences";
-	public final static String KEY_BAG_SIZE = "bagSize";
-	public final static String KEY_UPSIDE_DOWN = "upsideDown";
-	public final static String KEY_SOUND_ON = "soundOn";
-	public final static String KEY_MUSIC_ON = "soundOff";
+	private final String PREFERENCES_STRING = "Preferences";
+	private final String KEY_BAG_SIZE = "bagSize";
+	private final String KEY_UPSIDE_DOWN = "upsideDown";
+	private final String KEY_SOUND_ON = "soundOn";
+	private final String KEY_MUSIC_ON = "soundOff";
+	private final String KEY_LEVEL_SIZE = "levelSize";
 	private final int SCORES_HEIGHT = 10; // 10
 	private final int SCORES_WIDTH = 2; // 2
 	private final int LEVEL = 0; // 0
@@ -41,6 +42,7 @@ public class SavedStuff {
 	private int previousScore;
 	private int scoreToReplace;
 	private int bagSize;
+	private int levelSize;
 	private boolean soundOn;
 	private boolean musicOn;
 	private boolean newRecord;
@@ -55,6 +57,7 @@ public class SavedStuff {
 		upsideDown = prefs.getBoolean(KEY_UPSIDE_DOWN, false);
 		soundOn = prefs.getBoolean(KEY_SOUND_ON, true);
 		musicOn = prefs.getBoolean(KEY_MUSIC_ON, true);
+		levelSize = prefs.getInteger(KEY_LEVEL_SIZE, 0);
 	}
 
 	public void savePreferences () {
@@ -79,6 +82,8 @@ public class SavedStuff {
 					}
 				}
 			}
+		} catch (RuntimeException ex) {
+			ex.printStackTrace(System.out);
 		} catch (Exception e) {
 			Gdx.app.log("DEBUG", "Something terrible happened while trying to load the scores file " + scoresFilename);
 		}
@@ -101,6 +106,7 @@ public class SavedStuff {
 	}
 
 	public void saveScoresToFile () {
+		setScoresFilename();
 		String scoresString = "";
 		FileHandle scoresHandle = Gdx.files.local(scoresFilename);
 		for (int x = 0; x < SCORES_HEIGHT; x++) {
@@ -183,25 +189,18 @@ public class SavedStuff {
 		return upsideDown;
 	}
 
-	public void saveAll (Boolean sound, Boolean music, Boolean upside, int bag) {
+	public void saveAll (Boolean sound, Boolean music, Boolean upside, int bag, int level) {
 		prefs = Gdx.app.getPreferences(PREFERENCES_STRING);
 		prefs.putInteger(KEY_BAG_SIZE, bag);
 		prefs.putBoolean(KEY_SOUND_ON, sound);
 		prefs.putBoolean(KEY_MUSIC_ON, music);
 		prefs.putBoolean(KEY_UPSIDE_DOWN, upside);
+		prefs.putInteger(KEY_LEVEL_SIZE, level);
 		savePreferences();
 	}
 
-	public void setSound (Boolean sound) {
-
-	}
-
-	public void setMusic (Boolean music) {
-
-	}
-
-	public void setUpsideDown (Boolean upside) {
-
+	public int getLevelSize () {
+		return levelSize;
 	}
 
 	public boolean isPreviousScoreInTopScore () {
