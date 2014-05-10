@@ -49,24 +49,24 @@ public class SavedStuff {
 	private boolean upsideDown = false;
 
 	public SavedStuff () {
+		prefs = Gdx.app.getPreferences(PREFERENCES_STRING);
 	}
 
 	public void loadPreferences () {
-		prefs = Gdx.app.getPreferences(PREFERENCES_STRING);
 		bagSize = prefs.getInteger(KEY_BAG_SIZE, 0);
 		upsideDown = prefs.getBoolean(KEY_UPSIDE_DOWN, false);
 		soundOn = prefs.getBoolean(KEY_SOUND_ON, true);
 		musicOn = prefs.getBoolean(KEY_MUSIC_ON, true);
 		levelSize = prefs.getInteger(KEY_LEVEL_SIZE, 0);
+		setScoresFilename();
 	}
 
-	public void savePreferences () {
+	private void savePreferences () {
 		prefs.flush();
 	}
 
 	public void loadScores () {
-		setScoresFilename();
-
+		loadPreferences();
 		try {
 			String scoresString;
 			FileHandle scoresHandle;
@@ -106,7 +106,7 @@ public class SavedStuff {
 	}
 
 	public void saveScoresToFile () {
-		setScoresFilename();
+		loadPreferences();
 		String scoresString = "";
 		FileHandle scoresHandle = Gdx.files.local(scoresFilename);
 		for (int x = 0; x < SCORES_HEIGHT; x++) {
@@ -118,7 +118,7 @@ public class SavedStuff {
 		scoresHandle.writeString(scoresString, false);
 	}
 
-	public void checkScoreToTable () {
+	private void checkScoreToTable () {
 		newRecord = false;
 		for (int x = 0; x < SCORES_HEIGHT; x++) {
 			if (previousScore > getScoreStringToInt(x)) {
@@ -129,14 +129,14 @@ public class SavedStuff {
 		}
 	}
 
-	public void moveScoresDown (int index) {
+	private void moveScoresDown (int index) {
 		for (int x = SCORES_HEIGHT - 1; x > index; x--) {
 			allTheScoresStrings[x][LEVEL] = allTheScoresStrings[x - 1][LEVEL];
 			allTheScoresStrings[x][SCORE] = allTheScoresStrings[x - 1][SCORE];
 		}
 	}
 
-	public int getScoreStringToInt (int index) {
+	private int getScoreStringToInt (int index) {
 		return Integer.valueOf(allTheScoresStrings[index][SCORE]);
 	}
 
@@ -153,7 +153,7 @@ public class SavedStuff {
 		checkScoreToTable();
 	}
 
-	public String getHighScore () {
+	String getHighScore () {
 		return allTheScoresStrings[0][SCORE];
 	}
 
@@ -169,11 +169,7 @@ public class SavedStuff {
 		return scoreToReplace;
 	}
 
-	public String getPreviousScore () {
-		return String.valueOf(previousScore);
-	}
-
-	public int getBagSize () {
+	int getBagSize () {
 		return bagSize;
 	}
 
