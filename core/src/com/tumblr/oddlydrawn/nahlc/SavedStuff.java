@@ -31,6 +31,8 @@ public class SavedStuff {
 	private final String KEY_SOUND_ON = "soundOn";
 	private final String KEY_MUSIC_ON = "soundOff";
 	private final String KEY_LEVEL_SIZE = "levelSize";
+	private final String KEY_LOAD_SAVED_GAME = "loadGame";
+	private final String ERROR_TAG = "ERROR";
 	private final int SCORES_HEIGHT = 10; // 10
 	private final int SCORES_WIDTH = 2; // 2
 	private final int LEVEL = 0; // 0
@@ -46,7 +48,8 @@ public class SavedStuff {
 	private boolean soundOn;
 	private boolean musicOn;
 	private boolean newRecord;
-	private boolean upsideDown = false;
+	private boolean upsideDown;
+	private boolean loadSavedGame;
 
 	public SavedStuff () {
 		prefs = Gdx.app.getPreferences(PREFERENCES_STRING);
@@ -58,10 +61,11 @@ public class SavedStuff {
 		soundOn = prefs.getBoolean(KEY_SOUND_ON, true);
 		musicOn = prefs.getBoolean(KEY_MUSIC_ON, true);
 		levelSize = prefs.getInteger(KEY_LEVEL_SIZE, 0);
+		loadSavedGame = prefs.getBoolean(KEY_LOAD_SAVED_GAME, false);
 		setScoresFilename();
 	}
 
-	private void savePreferences () {
+	public void savePreferences () {
 		prefs.flush();
 	}
 
@@ -83,9 +87,12 @@ public class SavedStuff {
 				}
 			}
 		} catch (RuntimeException ex) {
-			ex.printStackTrace(System.out);
+			Gdx.app.log(ERROR_TAG, ex.getMessage());
+			ex.printStackTrace();
 		} catch (Exception e) {
-			Gdx.app.log("DEBUG", "Something terrible happened while trying to load the scores file " + scoresFilename);
+			Gdx.app.log(ERROR_TAG, "Something terrible happened while trying to load the scores file " + scoresFilename);
+			Gdx.app.log(ERROR_TAG, e.getMessage());
+			e.printStackTrace();
 		}
 	}
 
@@ -192,6 +199,7 @@ public class SavedStuff {
 		prefs.putBoolean(KEY_MUSIC_ON, music);
 		prefs.putBoolean(KEY_UPSIDE_DOWN, upside);
 		prefs.putInteger(KEY_LEVEL_SIZE, level);
+		prefs.putBoolean(KEY_LOAD_SAVED_GAME, false);
 		savePreferences();
 	}
 
@@ -201,5 +209,14 @@ public class SavedStuff {
 
 	public boolean isPreviousScoreInTopScore () {
 		return newRecord;
+	}
+
+	public boolean savedGameExists () {
+		return loadSavedGame;
+	}
+
+	public void setSavedGameExists (boolean loadSavedGame) {
+		prefs = Gdx.app.getPreferences(PREFERENCES_STRING);
+		prefs.putBoolean(KEY_LOAD_SAVED_GAME, loadSavedGame);
 	}
 }

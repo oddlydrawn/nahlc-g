@@ -289,6 +289,9 @@ public class GameOverScreen implements Screen {
 		}
 		stage.addActor(groupPrevious);
 
+		savedStuff.setSavedGameExists(false);
+		savedStuff.savePreferences();
+
 		savedStuff.updateLevelAndScore(level, score);
 		try {
 			savedStuff.saveScoresToFile();

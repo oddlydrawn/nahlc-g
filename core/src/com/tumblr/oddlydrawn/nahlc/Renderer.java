@@ -33,7 +33,7 @@ public class Renderer {
 	private final String HI_SCORE = "HiScore:";
 	private final float GLYPH_WIDTH = 11; // 11
 	private final float RIGHT_ORIGIN = 300; // 300
-	private final float LOVELY_GRAY = 0.18f; // 0.18f
+	public static final float LOVELY_GRAY = 0.18f; // 0.18f
 	private final int NEXT_SHAPE_ORIGIN_X = 15; // 15
 	private final int NEXT_SHAPE_ORIGIN_Y = 1; // 1
 	private final int NEXT_SHAPE_BG_X = 15; // 15
@@ -384,8 +384,6 @@ public class Renderer {
 	public void setSavedStuff (SavedStuff savedStuff) {
 		this.savedStuff = savedStuff;
 
-		savedStuff.loadScores();
-		savedStuff.loadPreferences();
 		highScoreString = savedStuff.getHighScore();
 		highScore = Integer.parseInt(savedStuff.getHighScore());
 	}

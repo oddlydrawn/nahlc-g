@@ -36,7 +36,7 @@ public class Floater {
 	private final int Z = 6; // 6
 	// Collection of the next MAX_NEXT_SHAPES to make shape distribution fair..ish.
 	private ArrayList<Integer> listNextShapes;
-	private Board board;
+	transient private Board board;
 	// Actual factual block positions.
 	private Coords posOne;
 	private Coords posTwo;
@@ -49,8 +49,8 @@ public class Floater {
 	private Coords posFourTest;
 	private Coords rotatedCoords;
 	private Coords tmpCoords;
-	private Random random;
-	private Audio audio;
+	transient private Random random;
+	transient private Audio audio;
 	// mids are distance from origin.
 	private float midX;
 	private float midY;
@@ -71,8 +71,12 @@ public class Floater {
 	private boolean paused;
 	private boolean randomNextShapes;
 
-	/** Constructor that makes all the new objects. */
 	public Floater () {
+
+	}
+
+	/** Constructor that makes all the new objects. */
+	public Floater (boolean makeNew) {
 		// New all the objects.
 		random = new Random();
 		posOne = new Coords();
@@ -89,7 +93,10 @@ public class Floater {
 		tmpCoords = new Coords();
 
 		listNextShapes = new ArrayList<Integer>();
+	}
 
+	public void initObjectsAfterSerialization () {
+		random = new Random();
 	}
 
 	/** After being called by Controller, tries to move left, if no collisions are found it will applyCoordChange() */
@@ -462,6 +469,10 @@ public class Floater {
 		} else {
 			paused = true;
 		}
+	}
+
+	public void setPausedTrue () {
+		paused = true;
 	}
 
 	public boolean isPaused () {

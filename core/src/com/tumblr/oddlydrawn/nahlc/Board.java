@@ -34,14 +34,14 @@ public class Board {
 	private final int TRIPLE = 3;
 	private final int NAHLC = 4;
 	private final int EMPTY = 7;
-	private Controller controller;
-	private Floater floater;
-	private Assets assets;
-	private Audio audio;
+	transient private Controller controller;
+	transient private Floater floater;
+	transient private Assets assets;
+	transient private Audio audio;
 	private int[][] board;
 	private int color;
-	private int x;
-	private int y;
+	transient private int x;
+	transient private int y;
 	private int row;
 	private int numTotalCompletedRows;
 	private int currentLevel;
@@ -50,6 +50,10 @@ public class Board {
 	private int numTotalBlocks;
 	private short counter;
 	private int levelMultiplier;
+
+	public Board () {
+
+	}
 
 	/** Creates a blank board. Usually blank. */
 	public void createBoard () {
