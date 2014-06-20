@@ -95,6 +95,8 @@ public class Renderer {
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
 
+		batch.disableBlending();
+
 		// Next shape isn't a board so it doesn't have empty squares to serve as a background.
 		drawNextShapeBackground();
 
@@ -108,6 +110,8 @@ public class Renderer {
 			nextShapePosUpdate();
 		}
 		drawNextShape();
+
+		batch.enableBlending();
 
 		assets.getLeftSprite().draw(batch);
 		assets.getRightSprite().draw(batch);

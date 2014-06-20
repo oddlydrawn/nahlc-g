@@ -115,10 +115,6 @@ public class GameScreen implements Screen {
 		FileHandle fileHandle2 = Gdx.files.local(BOARD_JSON);
 		fileHandle2.writeString(boardJsonString, DONT_APPEND);
 
-		String controllerJsonString = json.toJson(controller, Object.class);
-		FileHandle fileHandle3 = Gdx.files.local(CONTROLLER_JSON);
-		fileHandle3.writeString(controllerJsonString, DONT_APPEND);
-
 		Gdx.app.log("nahlc", "saved game thingy");
 		Gdx.app.log("nahlc", "floater exists: " + Gdx.files.local(FLOATER_JSON).exists());
 		Gdx.app.log("nahlc", "board exists: " + Gdx.files.local(BOARD_JSON).exists());
