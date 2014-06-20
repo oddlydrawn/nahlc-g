@@ -296,8 +296,10 @@ public class GameOverScreen implements Screen {
 		try {
 			savedStuff.saveScoresToFile();
 		} catch (RuntimeException ex) {
+			Gdx.app.log("ERROR NAHLC", ex.getMessage());
 			ex.printStackTrace();
 		} catch (Exception e) {
+			Gdx.app.log("ERROR NAHLC", e.getMessage());
 			e.printStackTrace();
 		}
 	}

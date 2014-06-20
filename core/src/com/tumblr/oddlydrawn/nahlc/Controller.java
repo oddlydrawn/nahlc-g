@@ -26,7 +26,7 @@ import com.badlogic.gdx.math.Vector3;
 /** @author oddlydrawn */
 public class Controller {
 	private final float LEVEL_UP_MINUS_MINUS = 0.027f; // 0.027f
-	private final float TIME_TO_DROP = 0.65f; // 0.65f, 0.6
+	public static final float TIME_TO_DROP = 0.65f; // 0.65f, 0.6
 	private final float TIME_TO_HOLD = 0.2f; // 0.2f
 	private final float TIME_TO_MOVE = 0.09f; // 0.09f
 	// It seems as though a speed of around 0.125 for the 20th level is a good jumping off point
@@ -305,5 +305,13 @@ public class Controller {
 
 	public void setSavedStuff (SavedStuff savedStuff) {
 		this.savedStuff = savedStuff;
+	}
+
+	public void setTimeToDrop (float timeToDrop) {
+		this.timeToDrop = timeToDrop;
+	}
+
+	public float getTimeToDrop () {
+		return timeToDrop;
 	}
 }

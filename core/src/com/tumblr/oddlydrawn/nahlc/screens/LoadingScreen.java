@@ -25,6 +25,7 @@ import com.tumblr.oddlydrawn.nahlc.SavedStuff;
 
 /** @author oddlydrawn */
 public class LoadingScreen implements Screen {
+	private final boolean SAVE_EXISTS = true;
 	Game g;
 	SavedStuff savedStuff;
 	float LOVELY_GRAY;
@@ -46,7 +47,7 @@ public class LoadingScreen implements Screen {
 
 		if (savedStuff.savedGameExists()) {
 			Gdx.app.log("nahlc", "saved game exists");
-			g.setScreen(new GameScreen(g, true));
+			g.setScreen(new GameScreen(g, SAVE_EXISTS));
 		} else {
 			Gdx.app.log("nahlc", "saved game does not exist");
 			g.setScreen(new MainMenuScreen(g));

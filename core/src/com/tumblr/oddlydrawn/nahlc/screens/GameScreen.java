@@ -33,9 +33,11 @@ import com.tumblr.oddlydrawn.nahlc.SavedStuff;
 public class GameScreen implements Screen {
 	public final static String FLOATER_JSON = "floater.json";
 	public final static String BOARD_JSON = "board.json";
+	public final static String CONTROLLER_JSON = "controller.json";
 	private final float TIME_TO_DISPOSE = 1.1f;
 	private final boolean DONT_APPEND = false;
 	private final boolean MAKE_NEW = true;
+	private final boolean DONT_MAKE_NEW = false;
 	private Game game;
 	private Board board;
 	private Controller controller;
@@ -50,6 +52,8 @@ public class GameScreen implements Screen {
 
 	public GameScreen (Game g) {
 		game = g;
+		json = new Json();
+
 		// New all the objects.
 		board = new Board();
 		controller = new Controller();
@@ -58,19 +62,19 @@ public class GameScreen implements Screen {
 		assets = new Assets();
 		audio = new Audio();
 		savedStuff = new SavedStuff();
-		json = new Json();
 
 		savedStuff.loadScores();
 		savedStuff.loadPreferences();
 		assets.initGame();
 
-		shareObjects(true);
+		shareObjects(MAKE_NEW);
 		fillBoardWithBlocks();
 	}
 
 	public GameScreen (Game g, boolean loadSavedGame) {
 		game = g;
 		json = new Json();
+
 		// load old objects
 		loadGameState();
 		floater.initObjectsAfterSerialization();
@@ -86,8 +90,10 @@ public class GameScreen implements Screen {
 		savedStuff.loadPreferences();
 		assets.initGame();
 
-		shareObjects(false);
+		float timeToDrop = savedStuff.getTimeToDrop();
+		controller.setTimeToDrop(timeToDrop);
 
+		shareObjects(DONT_MAKE_NEW);
 	}
 
 	public void loadGameState () {
@@ -101,21 +107,18 @@ public class GameScreen implements Screen {
 	}
 
 	public void saveGameState () {
-// json.setIgnoreUnknownFields(false);
-// Gdx.app.log("mew", json.toJson(floater, Object.class));
-// Gdx.app.log("mew", json.toJson(board, Object.class));
-// // System.out.println(json.prettyPrint(board));
-// Gdx.app.log("mew", json.toJson(controller, Object.class));
-// System.out.println(json.prettyPrint(controller));
-
 		String floaterJsonString = json.toJson(floater, Object.class);
-		String boardJsonString = json.toJson(board, Object.class);
-
 		FileHandle fileHandle = Gdx.files.local(FLOATER_JSON);
 		fileHandle.writeString(floaterJsonString, DONT_APPEND);
 
+		String boardJsonString = json.toJson(board, Object.class);
 		FileHandle fileHandle2 = Gdx.files.local(BOARD_JSON);
 		fileHandle2.writeString(boardJsonString, DONT_APPEND);
+
+		String controllerJsonString = json.toJson(controller, Object.class);
+		FileHandle fileHandle3 = Gdx.files.local(CONTROLLER_JSON);
+		fileHandle3.writeString(controllerJsonString, DONT_APPEND);
+
 		Gdx.app.log("nahlc", "saved game thingy");
 		Gdx.app.log("nahlc", "floater exists: " + Gdx.files.local(FLOATER_JSON).exists());
 		Gdx.app.log("nahlc", "board exists: " + Gdx.files.local(BOARD_JSON).exists());
@@ -150,31 +153,26 @@ public class GameScreen implements Screen {
 	public void render (float delta) {
 		// Process those inputs.
 		delta = Math.min(0.06f, Gdx.graphics.getDeltaTime());
-		try {
-			if (floater.isGameOver() == false) {
-				controller.update(delta);
-			} else {
-				timer += delta;
-				if (playedHurt == false) {
-					audio.playHurt();
-					playedHurt = true;
-				}
 
-				if (timer > TIME_TO_DISPOSE) {
-					dispose();
-					game.setScreen(new GameOverScreen(game, board.getCurrentLevel(), board.getCurrentScore()));
-				}
+		if (floater.isGameOver() == false) {
+			controller.update(delta);
+		} else {
+			timer += delta;
+			if (playedHurt == false) {
+				audio.playHurt();
+				playedHurt = true;
 			}
-			// Update board after inputs.
-			board.updateBoard();
 
-			// What do you think this is? O.o
-			renderer.render(delta);
-		} catch (RuntimeException ex) {
-			ex.printStackTrace(System.out);
-		} catch (Exception e) {
-			e.printStackTrace(System.out);
+			if (timer > TIME_TO_DISPOSE) {
+				dispose();
+				game.setScreen(new GameOverScreen(game, board.getCurrentLevel(), board.getCurrentScore()));
+			}
 		}
+		// Update board after inputs.
+		board.updateBoard();
+
+		// What do you think this is? O.o
+		renderer.render(delta);
 
 	}
 
@@ -195,6 +193,11 @@ public class GameScreen implements Screen {
 		floater.setPausedTrue();
 		savedStuff.setSavedGameExists(true);
 		savedStuff.savePreferences();
+
+		float timeToDrop = controller.getTimeToDrop();
+		savedStuff.setTimeToDrop(timeToDrop);
+		savedStuff.savePreferences();
+
 		saveGameState();
 	}
 

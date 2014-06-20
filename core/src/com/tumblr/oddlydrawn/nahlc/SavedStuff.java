@@ -32,6 +32,7 @@ public class SavedStuff {
 	private final String KEY_MUSIC_ON = "soundOff";
 	private final String KEY_LEVEL_SIZE = "levelSize";
 	private final String KEY_LOAD_SAVED_GAME = "loadGame";
+	private final String KEY_TIME_TO_DROP = "ttd";
 	private final String ERROR_TAG = "ERROR";
 	private final int SCORES_HEIGHT = 10; // 10
 	private final int SCORES_WIDTH = 2; // 2
@@ -41,6 +42,7 @@ public class SavedStuff {
 		{"4", "5000"}, {"3", "4000"}, {"2", "3000"}, {"1", "2000"}, {"0", "1000"}};
 	private String scoresFilename;
 	private Preferences prefs;
+	private float timeToDrop;
 	private int previousScore;
 	private int scoreToReplace;
 	private int bagSize;
@@ -56,12 +58,15 @@ public class SavedStuff {
 	}
 
 	public void loadPreferences () {
+		prefs = Gdx.app.getPreferences(PREFERENCES_STRING);
 		bagSize = prefs.getInteger(KEY_BAG_SIZE, 0);
 		upsideDown = prefs.getBoolean(KEY_UPSIDE_DOWN, false);
 		soundOn = prefs.getBoolean(KEY_SOUND_ON, true);
 		musicOn = prefs.getBoolean(KEY_MUSIC_ON, true);
 		levelSize = prefs.getInteger(KEY_LEVEL_SIZE, 0);
 		loadSavedGame = prefs.getBoolean(KEY_LOAD_SAVED_GAME, false);
+		float ttd = Controller.TIME_TO_DROP;
+		timeToDrop = prefs.getFloat(KEY_TIME_TO_DROP, ttd);
 		setScoresFilename();
 	}
 
@@ -116,13 +121,18 @@ public class SavedStuff {
 		loadPreferences();
 		String scoresString = "";
 		FileHandle scoresHandle = Gdx.files.local(scoresFilename);
+		Gdx.app.log("NAHLC", "scoresFilename=" + scoresFilename);
 		for (int x = 0; x < SCORES_HEIGHT; x++) {
 			for (int y = 0; y < SCORES_WIDTH; y++) {
 				scoresString += allTheScoresStrings[x][y];
 				scoresString += ",";
 			}
 		}
+		Gdx.app.log("NAHLC", "scoresFilename exists: " + Gdx.files.local(scoresFilename).exists());
+		Gdx.app.log("NAHLC", "saving to file");
 		scoresHandle.writeString(scoresString, false);
+		Gdx.app.log("NAHLC", "saved");
+		Gdx.app.log("NAHLC", "scoresFilename exists: " + Gdx.files.local(scoresFilename).exists());
 	}
 
 	private void checkScoreToTable () {
@@ -218,5 +228,14 @@ public class SavedStuff {
 	public void setSavedGameExists (boolean loadSavedGame) {
 		prefs = Gdx.app.getPreferences(PREFERENCES_STRING);
 		prefs.putBoolean(KEY_LOAD_SAVED_GAME, loadSavedGame);
+	}
+
+	public void setTimeToDrop (float ttd) {
+		prefs = Gdx.app.getPreferences(PREFERENCES_STRING);
+		prefs.putFloat(KEY_TIME_TO_DROP, ttd);
+	}
+
+	public float getTimeToDrop () {
+		return timeToDrop;
 	}
 }
