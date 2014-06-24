@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.tumblr.oddlydrawn.nahlc.android"
-    android:versionCode="9"
-    android:versionName="0.09" >
+    android:versionCode="10"
+    android:versionName="0.10" >
 
     <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="19" />
     <uses-feature android:glEsVersion="0x00020000" android:required="true"/>

@@ -58,7 +58,6 @@ public class GameOverScreen implements Screen {
 		assets = new Assets();
 		assets.initGameOver();
 		stage = new Stage(new StretchViewport(Renderer.WIDTH, Renderer.HEIGHT));
-		Gdx.input.setInputProcessor(stage);
 		skin = new Skin();
 
 		savedStuff.loadScores();
@@ -335,8 +334,16 @@ public class GameOverScreen implements Screen {
 	public void render (float delta) {
 		Gdx.gl.glClearColor(0.2f, 0.2f, 0.2f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		stage.act(delta);
-		stage.draw();
+		try {
+			stage.act(delta);
+			stage.draw();
+		} catch (RuntimeException ex) {
+			Gdx.app.log("ERROR NAHLC", ex.getMessage());
+			ex.printStackTrace();
+		} catch (Exception e) {
+			Gdx.app.log("ERROR NAHLC", e.getMessage());
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -347,6 +354,7 @@ public class GameOverScreen implements Screen {
 
 	@Override
 	public void show () {
+		Gdx.input.setInputProcessor(stage);
 	}
 
 	@Override

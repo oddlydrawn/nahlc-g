@@ -19,15 +19,18 @@ package com.tumblr.oddlydrawn.nahlc;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 
 /** @author oddlydrawn */
 public class Renderer {
 	final public static float WIDTH = 320; // 320
 	final public static float HEIGHT = 480; // 480
-	private final String FONT_LOC = "data/fonts/deja.fnt";
+	private final String FONT_LOC = "data/fonts/d.fnt";
 	private final String SCORE = "Score:";
 	private final String LEVEL = "Level:";
 	private final String HI_SCORE = "HiScore:";
@@ -57,6 +60,7 @@ public class Renderer {
 	private Floater floater;
 	private Assets assets;
 	private TextureRegion region;
+	private Texture distanceFontTexture;
 	// Coords for next shape.
 	private Coords posOne;
 	private Coords posTwo;
@@ -65,6 +69,7 @@ public class Renderer {
 	private String tmpString;
 	private String highScoreString;
 	private SavedStuff savedStuff;
+	private ShaderProgram fontShader;
 	private int highScore;
 	private int color;
 	private int x;
@@ -78,7 +83,18 @@ public class Renderer {
 		batch = new SpriteBatch();
 		camera = new OrthographicCamera(WIDTH, HEIGHT);
 		camera.setToOrtho(true, WIDTH, HEIGHT);
-		font = new BitmapFont(Gdx.files.internal(FONT_LOC), true);
+
+		distanceFontTexture = new Texture(Gdx.files.internal("data/fonts/d.png"), true); // true enables mipmaps
+		distanceFontTexture.setFilter(TextureFilter.Linear, TextureFilter.Linear); // linear filtering in nearest
+// mipmap image
+
+		font = new BitmapFont(Gdx.files.internal(FONT_LOC), new TextureRegion(distanceFontTexture), true);
+
+		fontShader = new ShaderProgram(Gdx.files.internal("data/shaders/distancefield.vert"),
+			Gdx.files.internal("data/shaders/distancefield.frag"));
+		if (!fontShader.isCompiled()) {
+			Gdx.app.error("fontShader", "compilation failed:\n" + fontShader.getLog());
+		}
 
 		posOne = new Coords();
 		posTwo = new Coords();
@@ -95,6 +111,7 @@ public class Renderer {
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
 
+		batch.setShader(null);
 		batch.disableBlending();
 
 		// Next shape isn't a board so it doesn't have empty squares to serve as a background.
@@ -121,6 +138,7 @@ public class Renderer {
 		assets.getDropDownSprite().draw(batch);
 		assets.getPauseSprite().draw(batch);
 
+		batch.setShader(fontShader);
 		// "Level:"
 		font.draw(batch, LEVEL, 235, 120);
 		// Level number
@@ -141,6 +159,8 @@ public class Renderer {
 			tmpString = Integer.toString(board.getCurrentScore());
 			font.draw(batch, tmpString, rightJustify(tmpString), 250);
 		}
+
+		batch.setShader(null);
 
 		if (floater.isPaused() == true) {
 			assets.getBoxPatch().draw(batch, Assets.BLOCK_WIDTH * PAD_TWO, Assets.BLOCK_HEIGHT * PAD_TWO,
@@ -393,7 +413,8 @@ public class Renderer {
 	}
 
 	public void dispose () {
-		font.dispose();
 		batch.dispose();
+		font.dispose();
+		distanceFontTexture.dispose();
 	}
 }

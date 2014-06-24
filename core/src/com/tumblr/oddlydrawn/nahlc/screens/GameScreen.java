@@ -203,8 +203,8 @@ public class GameScreen implements Screen {
 
 	@Override
 	public void dispose () {
+		renderer.dispose();
 		audio.dispose();
 		assets.disposeGame();
-		renderer.dispose();
 	}
 }
