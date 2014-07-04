@@ -49,7 +49,6 @@ public class GameScreen implements Screen {
 	private float timer;
 	private boolean playedHurt;
 	private Json json;
-	private boolean disposed;
 
 	public GameScreen (Game g) {
 		game = g;
@@ -162,7 +161,6 @@ public class GameScreen implements Screen {
 
 			if (timer > TIME_TO_DISPOSE) {
 				dispose();
-				disposed = true;
 				game.setScreen(new GameOverScreen(game, board.getCurrentLevel(), board.getCurrentScore()));
 				return;
 			}
