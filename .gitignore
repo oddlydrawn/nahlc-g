@@ -13,4 +13,6 @@ libs/
 .ipr
 .iml
 scores.txt
+board.json
+floater.json
 .swp

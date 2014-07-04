@@ -108,6 +108,9 @@ public class Renderer {
 		Gdx.gl.glClearColor(LOVELY_GRAY, LOVELY_GRAY, LOVELY_GRAY, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+		if (floater.isGameOver()) {
+			System.out.println("game over");
+		}
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
 
@@ -398,7 +401,9 @@ public class Renderer {
 	}
 
 	public void resize (int width, int height) {
-		camera.setToOrtho(true, WIDTH, HEIGHT);
+		if (camera != null) {
+			camera.setToOrtho(true, WIDTH, HEIGHT);
+		}
 	}
 
 	public void setController (Controller controller) {
@@ -413,8 +418,9 @@ public class Renderer {
 	}
 
 	public void dispose () {
-		batch.dispose();
-		font.dispose();
+		fontShader.dispose();
 		distanceFontTexture.dispose();
+		font.dispose();
+		batch.dispose();
 	}
 }

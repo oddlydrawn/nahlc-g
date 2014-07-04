@@ -301,6 +301,7 @@ public class GameOverScreen implements Screen {
 			Gdx.app.log("ERROR NAHLC", e.getMessage());
 			e.printStackTrace();
 		}
+		Gdx.app.log("NAHLC", "leaving create()");
 	}
 
 	private float subPosFromLength (int length) {
@@ -336,11 +337,24 @@ public class GameOverScreen implements Screen {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		try {
 			stage.act(delta);
-			stage.draw();
 		} catch (RuntimeException ex) {
+			Gdx.app.log("NAHLC", "RUNTIME EXCEPTION while acting on stage");
 			Gdx.app.log("ERROR NAHLC", ex.getMessage());
 			ex.printStackTrace();
 		} catch (Exception e) {
+			Gdx.app.log("NAHLC", "EXCEPTION while acting on stage");
+			Gdx.app.log("ERROR NAHLC", e.getMessage());
+			e.printStackTrace();
+		}
+
+		try {
+			stage.draw();
+		} catch (RuntimeException ex) {
+			Gdx.app.log("NAHLC", "RUNTIME EXCEPTION while drawing stage");
+			Gdx.app.log("ERROR NAHLC", ex.getMessage());
+			ex.printStackTrace();
+		} catch (Exception e) {
+			Gdx.app.log("NAHLC", "EXCEPTION while drawing stage");
 			Gdx.app.log("ERROR NAHLC", e.getMessage());
 			e.printStackTrace();
 		}
@@ -349,24 +363,28 @@ public class GameOverScreen implements Screen {
 	@Override
 	public void resize (int width, int height) {
 		stage.getViewport().update(width, height, true);
-
+		Gdx.app.log("NAHLC", "leaving resize()");
 	}
 
 	@Override
 	public void show () {
 		Gdx.input.setInputProcessor(stage);
+		Gdx.app.log("NAHLC", "leaving show");
 	}
 
 	@Override
 	public void hide () {
+		Gdx.app.log("NAHLC", "leaving hide()");
 	}
 
 	@Override
 	public void pause () {
+		Gdx.app.log("NAHLC", "leaving pause()");
 	}
 
 	@Override
 	public void resume () {
+		Gdx.app.log("NAHLC", "leaving resume()");
 	}
 
 	@Override
@@ -374,6 +392,7 @@ public class GameOverScreen implements Screen {
 		stage.dispose();
 		skin.dispose();
 		assets.disposeGameOver();
+		Gdx.app.log("NAHLC", "leaving dispose()");
 	}
 
 	public void log (String s) {
